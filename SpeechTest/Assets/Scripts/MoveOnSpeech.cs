@@ -83,15 +83,15 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
             running = false;
             scrMedia.Load("MonsterLooksUpmp4.mp4");
             scrMedia.Play();
-            Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
-            theScale.y = 1.6f;
-            GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
+            
         }
         //Load running only once when we say the monster is going to run
         if (running && (running != runningOriginal))
         {
             scrMedia.Load("MonsterRuns03.mp4");
             scrMedia.Play();
+
+
         }
         //Check for collisions
 		
@@ -108,23 +108,31 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
         }
 
         //Vertical
-        //if (GameObject.FindGameObjectWithTag("Monster").transform.position.y < bottomBorder + buffer)
-        //{ // ship is past world-space view / off screen
-        //    lastResults2 = "Too far DOWN";
-        //    GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x,topBorder - buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-        //}
-        //if (GameObject.FindGameObjectWithTag("Monster").transform.position.y > topBorder - buffer)
-        //{ // ship is past world-space view / off screen
-        //    lastResults2 = "Too far up";
-        //    GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x, bottomBorder + buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-        //}
+        if (GameObject.FindGameObjectWithTag("Monster").transform.position.y < bottomBorder + buffer)
+        { 
+			//ship is past world-space view / off screen
+            lastResults2 = "Too far DOWN";
+            GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x,topBorder - buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
+        }
+
+
+		if (GameObject.FindGameObjectWithTag("Monster").transform.position.y > topBorder - buffer)
+		{ 
+			//ship is past world-space view / off screen
+			lastResults2 = "Too far DOWN";
+			GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x,bottomBorder + buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
+		}
+
        
         movement = new Vector2(speed.x*direction.x, speed.y * direction.y);
-
-    }
-    void OnGUI()
-    {
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "Speech text:"+lastResults,fontStyle);
+		Vector3 theScale1 = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
+		theScale1.y = 1.6f;
+		GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale1;
+		
+	}
+	void OnGUI()
+	{
+		GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "Speech text:"+lastResults,fontStyle);
         GUI.Label(new Rect(0, 30, Screen.width, Screen.height), "Collision:" + lastResults2, fontStyle);
     }
     void FixedUpdate()
