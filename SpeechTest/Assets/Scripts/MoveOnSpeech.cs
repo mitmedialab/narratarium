@@ -15,14 +15,13 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
         SpeechRecognition.AddSpeechRecognitionListeren(this);
         SpeechRecognition.StartListening();
         fontStyle.normal.textColor = Color.black;
+			dist = (transform.position - (Camera.allCameras[1]).transform.position).z; 
 
-        dist = (transform.position - Camera.main.transform.position).z; 
+		leftBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).x; 
+		rightBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
 
-        leftBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).x; 
-        rightBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
-
-        topBorder = Camera.main.ViewportToWorldPoint(new Vector3(1, 1, dist)).y;
-        bottomBorder = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
+		topBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 1, dist)).y;
+		bottomBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
 
     }
     public void OnResults(string[] results)
@@ -81,7 +80,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
         {
             direction = new Vector2(0,0);
             running = false;
-            scrMedia.Load("MonsterLooksUpmp4.mp4");
+            scrMedia.Load("Monster Looks Up.mp4");
             scrMedia.Play();
             
         }

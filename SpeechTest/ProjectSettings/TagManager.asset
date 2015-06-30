@@ -4,7 +4,11 @@
 TagManager:
   serializedVersion: 2
   tags:
+  - Sunrise
+  - Sunset
+  - Sunshine
   - Monster
+  - SecondaryCamera
   layers:
   - Default
   - TransparentFX

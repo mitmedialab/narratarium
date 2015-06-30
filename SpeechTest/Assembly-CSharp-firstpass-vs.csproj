@@ -57,7 +57,6 @@
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Universal Chroma Key.shader" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Readme.txt" />
-     <None Include="Assets\StreamingAssets\build_info.txt" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

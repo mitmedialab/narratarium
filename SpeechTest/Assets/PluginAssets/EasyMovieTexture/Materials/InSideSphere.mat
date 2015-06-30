@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: InSideSphere
-  m_Shader: {fileID: 4800000, guid: 85e2bd710e5647845925d8105e9949f9, type: 3}
+  m_Shader: {fileID: 106, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: 
   m_LightmapFlags: 5
   m_CustomRenderQueue: -1
@@ -22,9 +22,29 @@ Material:
           m_Texture: {fileID: 0}
           m_Scale: {x: 1, y: 1}
           m_Offset: {x: 0, y: 0}
-    m_Floats: {}
+    m_Floats:
+      data:
+        first:
+          name: _Exposure
+        second: 1.29999995
+      data:
+        first:
+          name: _SunSize
+        second: .0399999991
+      data:
+        first:
+          name: _AtmosphereThickness
+        second: 1
     m_Colors:
       data:
         first:
           name: _Color
         second: {r: 1, g: 1, b: 1, a: 1}
+      data:
+        first:
+          name: _GroundColor
+        second: {r: .368999988, g: .349000007, b: .340999991, a: 1}
+      data:
+        first:
+          name: _SkyTint
+        second: {r: .5, g: .5, b: .5, a: 1}

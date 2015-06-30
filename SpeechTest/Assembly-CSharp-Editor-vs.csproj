@@ -54,7 +54,6 @@
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Universal Chroma Key.shader" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Readme.txt" />
-     <None Include="Assets\StreamingAssets\build_info.txt" />
  <Reference Include="Assembly-UnityScript">
  <HintPath>/Users/pedrocolon/Documents/git/narratarium/SpeechTest/Library/ScriptAssemblies/Assembly-UnityScript.dll</HintPath>
  </Reference>
