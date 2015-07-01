@@ -208,7 +208,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: dd5a97752fc2f8040bb2453ac73bb006, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 91af99c7da8fa5d4f942ebb295654cb8, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
 --- !u!4 &247694483
 Transform:
@@ -249,7 +249,7 @@ Transform:
   m_Children:
   - {fileID: 767181789}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
 --- !u!4 &767181789 stripped
 Transform:
   m_PrefabParentObject: {fileID: 432248, guid: 0c16d44acd311fd4c92749928e0491ab, type: 2}
@@ -373,11 +373,11 @@ Prefab:
     m_Modifications:
     - target: {fileID: 400000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
       propertyPath: m_LocalPosition.x
-      value: -2.99000001
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
       propertyPath: m_LocalPosition.y
-      value: -.589999974
+      value: -1.5
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
       propertyPath: m_LocalPosition.z
@@ -443,6 +443,10 @@ Prefab:
       propertyPath: m_Name
       value: Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
   m_IsPrefabParent: 0
@@ -463,6 +467,7 @@ GameObject:
   - 20: {fileID: 1232422453}
   - 124: {fileID: 1232422452}
   - 92: {fileID: 1232422451}
+  - 114: {fileID: 1232422450}
   m_Layer: 0
   m_Name: Secondary Camera
   m_TagString: Untagged
@@ -482,6 +487,17 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1243754496}
   m_RootOrder: 0
+--- !u!114 &1232422450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1232422448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a668b8dca2e349c682b6da4d16e964b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!92 &1232422451
 Behaviour:
   m_ObjectHideFlags: 0
@@ -516,7 +532,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 6.3769989
+  orthographic size: 2.89006615
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
@@ -618,7 +634,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 11.5725832
+  orthographic size: 5.36459732
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -680,7 +696,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 460104, guid: c9bb36a34a70744128a3b44cd4dd9501, type: 2}
       propertyPath: m_RootOrder
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2360188, guid: c9bb36a34a70744128a3b44cd4dd9501, type: 2}
       propertyPath: m_Materials.Array.data[0]
@@ -758,4 +774,4 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
