@@ -6,16 +6,17 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     private GUIStyle fontStyle = new GUIStyle();
     public MediaPlayerCtrl scrMedia;
     private string lastResults = "", lastResults2="";
-    public Vector2 direction = new Vector2(0, 0), speed = new Vector2(2, 2), movement;
-    private float dist, leftBorder, rightBorder, buffer,topBorder,bottomBorder;
-    private bool facingRight = true, running = false;
+	public Vector2 direction = new Vector2(0, 0), speed = new Vector2(2, 2), movement, runningSpeed = new Vector2(2, 2), walkingSpeed = new Vector2(1, 1);
+    private float dist, leftBorder, rightBorder, buffer=0f,topBorder,bottomBorder;
+    private bool facingRight = true, running = false, walking = false;
+	private string lastAnimation = "";
     // Use this for initialization
     void Start()
     {
         SpeechRecognition.AddSpeechRecognitionListeren(this);
         SpeechRecognition.StartListening();
         fontStyle.normal.textColor = Color.black;
-			dist = (transform.position - (Camera.allCameras[1]).transform.position).z; 
+		dist = (transform.position - (Camera.allCameras[1]).transform.position).z; 
 
 		leftBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).x; 
 		rightBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
@@ -39,61 +40,72 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     // Update is called once per frame
     void Update()
     {
-        bool runningOriginal = running;
-        if (SpeechRecognition.CommandRecognized("UP"))
-        {
-            direction = new Vector2(0, 1);
-        }
-        if (SpeechRecognition.CommandRecognized("DOWN"))
-        {
-            direction = new Vector2(0, -1);
-        }
-        if (SpeechRecognition.CommandRecognized("LEFT"))
-        {
-            direction = new Vector2(-1, 0);
-            if (facingRight)
-            {
-                facingRight = !facingRight;
-                Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
-                theScale.x *= -1;
-                lastResults2 = theScale.ToString();
-                GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
-            }
-            running = true;
+		string commandRecognized = "";
+		Debug.Log("Beggining update");
+		foreach(string key in SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations.Keys){
+			if(SpeechRecognition.CommandRecognized(key)){
+				commandRecognized = key;
+				Debug.Log ("Command recognized "+ key);
+				break;
+			}
+		}
+		if(!(commandRecognized.Equals("")||commandRecognized==null)){
+			
+			Debug.Log("Animation Dictionary");
+			Debug.Log("AnimationDict"+SpeechRecognition.GetSpeechAnimationDictionary());
+			SpeechAnimationDictionary.Animation currentAnimation = null;
 
-        }
-        if (SpeechRecognition.CommandRecognized("RIGHT"))
-        {
-            direction = new Vector2(1, 0);
-            running = true;
-            if (!facingRight)
-            {
-                facingRight = !facingRight;
-                Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
-                theScale.x *= -1;
-                lastResults2 = theScale.ToString();
-                GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
-            }
-
-        }
-        if (SpeechRecognition.CommandRecognized("STOP"))
-        {
-            direction = new Vector2(0,0);
-            running = false;
-            scrMedia.Load("Monster Looks Up.mp4");
-            scrMedia.Play();
-            
-        }
-        //Load running only once when we say the monster is going to run
-        if (running && (running != runningOriginal))
-        {
-            scrMedia.Load("MonsterRuns03.mp4");
-            scrMedia.Play();
-
-
-        }
-        //Check for collisions
-		
+			currentAnimation = SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations[commandRecognized];
+			if(currentAnimation != null){
+				try{
+					direction = currentAnimation.direction;
+					if(facingRight && currentAnimation.flippedX){
+						//Monster is facing right and we need to flip
+						facingRight = !facingRight;
+						Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
+						theScale.x *= -1;
+						//lastResults2 = theScale.ToString();
+						GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
+					}
+					else if(!facingRight&&!currentAnimation.flippedX){
+						//opposite condition
+						facingRight = !facingRight;
+						Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
+						theScale.x *= -1;
+						//lastResults2 = theScale.ToString();
+						GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
+					}
+					//Check if running or walking
+					if(currentAnimation.running){
+						running = currentAnimation.running;
+						walking = false;
+						speed = runningSpeed;
+					}
+					else if(currentAnimation.walking){
+						running = false;
+						walking = currentAnimation.walking;
+						speed = walkingSpeed;
+					}
+					else{
+						running = walking = false;
+					}
+					if(currentAnimation!=null)
+					if(lastAnimation.Equals(currentAnimation.animation)){
+						//Do nothing video is already playing
+					}
+					else if(!currentAnimation.animation.Equals("")&&currentAnimation.animation!=null){
+						scrMedia.Load(currentAnimation.animation);
+						scrMedia.Play();
+					}
+					lastAnimation = currentAnimation.animation;
+					}
+				catch(System.Exception e){
+					lastResults2="Exception"+e.ToString();
+					return;
+				}
+				//Check for collisions
+			}
+		}
         //Horizontal
         if (GameObject.FindGameObjectWithTag("Monster").transform.position.x < leftBorder-buffer)
         { // ship is past world-space view / off screen
@@ -127,7 +139,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		Vector3 theScale1 = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
 		theScale1.y = 1.6f;
 		GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale1;
-		
+
 	}
 	void OnGUI()
 	{

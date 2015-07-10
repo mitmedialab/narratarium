@@ -1,0 +1,39 @@
+﻿[
+{
+	"name":"UP",
+	"voiceCommands":["up", "go up"],
+	"animation":null
+},
+{
+	"name":"DOWN",
+	"voiceCommands":["down", "go down"],
+	"animation":null
+},
+{
+	"name":"RIGHT",
+	"voiceCommands":["right", "go right"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animationFile":"MonsterRuns03.mp4"
+	}
+},
+{
+	"name":"LEFT",
+	"voiceCommands":["left", "go left"],
+	"animation":{
+		"flipX":true,
+		"flipY":false,
+		"animationFile":"MonsterRuns03.mp4"
+	}
+},
+{
+	"name":"STOP",
+	"voiceCommands":["stop", "go down"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animationFile":null
+	}
+}
+]
