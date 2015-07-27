@@ -1,0 +1,53 @@
+﻿#pragma once
+#include <stdint.h>
+#include <assert.h>
+#include <exception>
+#include "codegen/il2cpp-codegen.h"
+
+// System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>
+struct KeyCollection_t142;
+// System.Object
+struct Object_t;
+// System.Collections.Generic.Dictionary`2<System.String,SpeechAnimationDictionary/Animation>
+struct Dictionary_2_t24;
+// System.String
+struct String_t;
+// System.Collections.Generic.IEnumerator`1<System.String>
+struct IEnumerator_1_t2484;
+// System.Array
+struct Array_t;
+// System.Collections.IEnumerator
+struct IEnumerator_t37;
+// System.String[]
+struct StringU5BU5D_t31;
+// System.Collections.Generic.Dictionary`2/KeyCollection/Enumerator<System.String,SpeechAnimationDictionary/Animation>
+#include "mscorlib_System_Collections_Generic_Dictionary_2_KeyCollecti_1.h"
+
+// System.Void System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::.ctor(System.Collections.Generic.Dictionary`2<TKey,TValue>)
+// System.Collections.Generic.Dictionary`2/KeyCollection<System.Object,System.Object>
+#include "mscorlib_System_Collections_Generic_Dictionary_2_KeyCollecti_4MethodDeclarations.h"
+#define KeyCollection__ctor_m10199(__this, ___dictionary, method) (( void (*) (KeyCollection_t142 *, Dictionary_2_t24 *, const MethodInfo*))KeyCollection__ctor_m9703_gshared)(__this, ___dictionary, method)
+// System.Void System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.ICollection<TKey>.Add(TKey)
+#define KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Add_m10200(__this, ___item, method) (( void (*) (KeyCollection_t142 *, String_t*, const MethodInfo*))KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Add_m9704_gshared)(__this, ___item, method)
+// System.Void System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.ICollection<TKey>.Clear()
+#define KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Clear_m10201(__this, method) (( void (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Clear_m9705_gshared)(__this, method)
+// System.Boolean System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.ICollection<TKey>.Contains(TKey)
+#define KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Contains_m10202(__this, ___item, method) (( bool (*) (KeyCollection_t142 *, String_t*, const MethodInfo*))KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Contains_m9706_gshared)(__this, ___item, method)
+// System.Boolean System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.ICollection<TKey>.Remove(TKey)
+#define KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Remove_m10203(__this, ___item, method) (( bool (*) (KeyCollection_t142 *, String_t*, const MethodInfo*))KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_Remove_m9707_gshared)(__this, ___item, method)
+// System.Collections.Generic.IEnumerator`1<TKey> System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.IEnumerable<TKey>.GetEnumerator()
+#define KeyCollection_System_Collections_Generic_IEnumerableU3CTKeyU3E_GetEnumerator_m10204(__this, method) (( Object_t* (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_System_Collections_Generic_IEnumerableU3CTKeyU3E_GetEnumerator_m9708_gshared)(__this, method)
+// System.Void System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.ICollection.CopyTo(System.Array,System.Int32)
+#define KeyCollection_System_Collections_ICollection_CopyTo_m10205(__this, ___array, ___index, method) (( void (*) (KeyCollection_t142 *, Array_t *, int32_t, const MethodInfo*))KeyCollection_System_Collections_ICollection_CopyTo_m9709_gshared)(__this, ___array, ___index, method)
+// System.Collections.IEnumerator System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.IEnumerable.GetEnumerator()
+#define KeyCollection_System_Collections_IEnumerable_GetEnumerator_m10206(__this, method) (( Object_t * (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_System_Collections_IEnumerable_GetEnumerator_m9710_gshared)(__this, method)
+// System.Boolean System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.Generic.ICollection<TKey>.get_IsReadOnly()
+#define KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_get_IsReadOnly_m10207(__this, method) (( bool (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_System_Collections_Generic_ICollectionU3CTKeyU3E_get_IsReadOnly_m9711_gshared)(__this, method)
+// System.Object System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::System.Collections.ICollection.get_SyncRoot()
+#define KeyCollection_System_Collections_ICollection_get_SyncRoot_m10208(__this, method) (( Object_t * (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_System_Collections_ICollection_get_SyncRoot_m9712_gshared)(__this, method)
+// System.Void System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::CopyTo(TKey[],System.Int32)
+#define KeyCollection_CopyTo_m10209(__this, ___array, ___index, method) (( void (*) (KeyCollection_t142 *, StringU5BU5D_t31*, int32_t, const MethodInfo*))KeyCollection_CopyTo_m9713_gshared)(__this, ___array, ___index, method)
+// System.Collections.Generic.Dictionary`2/KeyCollection/Enumerator<TKey,TValue> System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::GetEnumerator()
+#define KeyCollection_GetEnumerator_m598(__this, method) (( Enumerator_t141  (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_GetEnumerator_m9714_gshared)(__this, method)
+// System.Int32 System.Collections.Generic.Dictionary`2/KeyCollection<System.String,SpeechAnimationDictionary/Animation>::get_Count()
+#define KeyCollection_get_Count_m10210(__this, method) (( int32_t (*) (KeyCollection_t142 *, const MethodInfo*))KeyCollection_get_Count_m9715_gshared)(__this, method)
