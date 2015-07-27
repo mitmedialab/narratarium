@@ -26,7 +26,7 @@ public class SpeechRecognition : MonoBehaviour {
 
 	public bool disableScreenLockOnResult = false;
 	public float screenLockTimeout = 10f;
-
+	public string fileName = "";
 
 	public enum State{
 		NOT_INITIALIZED = 0,
@@ -100,7 +100,7 @@ public class SpeechRecognition : MonoBehaviour {
 		instance = this;
 		speechDictionary = gameObject.GetComponent<SpeechAnimationDictionary>();
 
-		string fileContent = loadFile("commands");
+		string fileContent = loadFile(fileName);
 
 
 		Debug.Log ("Filecontent:"+fileContent);

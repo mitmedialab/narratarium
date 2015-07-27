@@ -1,0 +1,15 @@
+﻿[
+{
+	"name":"HEYMONSTER",
+	"voiceCommands":["hey monster", "heymonster", "hey monster!"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"MonsterIdleBreaths Hard.mp4",
+		"direction":[0,0],
+		"running":false,
+		"walking":true
+	}
+	
+}
+]

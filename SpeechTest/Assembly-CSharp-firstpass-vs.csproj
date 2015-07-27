@@ -52,6 +52,8 @@
      <Compile Include="Assets\Plugins\SpeechRecognition\SpeechAnimationDictionary.cs" />
      <Compile Include="Assets\Plugins\SpeechRecognition\SpeechRecognition.cs" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Unlit_SphereInside.shader" />
+     <None Include="Assets\Resources\titlescreencommands.txt" />
+     <None Include="Assets\Resources\scriptcommands1.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\readme.txt" />
      <None Include="Assets\PluginAssets\SpeechRecognition\readme.txt" />

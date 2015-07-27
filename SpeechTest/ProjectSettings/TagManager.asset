@@ -9,6 +9,8 @@ TagManager:
   - Sunshine
   - Monster
   - SecondaryCamera
+  - Fader
+  - MainAudio
   layers:
   - Default
   - TransparentFX

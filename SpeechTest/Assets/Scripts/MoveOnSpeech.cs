@@ -1,39 +1,35 @@
 using UnityEngine;
 using System.Collections;
 
+
 public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 
     private GUIStyle fontStyle = new GUIStyle();
     public MediaPlayerCtrl scrMedia;
     private string lastResults = "", lastResults2="";
 	public Vector2 direction = new Vector2(0, 0), speed = new Vector2(2, 2), movement, runningSpeed = new Vector2(2, 2), walkingSpeed = new Vector2(1, 1);
-    private float dist, leftBorder, rightBorder, buffer=0f,topBorder,bottomBorder;
     private bool facingRight = true, running = false, walking = false;
 	private string lastAnimation = "";
-    // Use this for initialization
+	public string taggedObject = "Monster";
+	private Queue animationQueue = new Queue();
+	// Use this for initialization
     void Start()
     {
+		//Add the listener
         SpeechRecognition.AddSpeechRecognitionListeren(this);
+		//Start it
         SpeechRecognition.StartListening();
-        fontStyle.normal.textColor = Color.black;
-		dist = (transform.position - (Camera.allCameras[1]).transform.position).z; 
-
-		leftBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).x; 
-		rightBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 0, dist)).x;
-
-		topBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 1, dist)).y;
-		bottomBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
+		//Change the font to make it visible
+        fontStyle.normal.textColor = Color.white;
 
     }
     public void OnResults(string[] results)
     {
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
-        //foreach (string s in results)
-        //{
-            sb.Append(results[0]);
-           // sb.Append(", ");
-        //}
+        sb.Append(results[0]);
+		//Display the last results for debugging
         lastResults = sb.ToString();
+		//Restart the listening.
         SpeechRecognition.StartListening();
     }
 
@@ -41,7 +37,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     void Update()
     {
 		string commandRecognized = "";
-		Debug.Log("Beggining update");
 		foreach(string key in SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations.Keys){
 			if(SpeechRecognition.CommandRecognized(key)){
 				commandRecognized = key;
@@ -98,48 +93,123 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 						scrMedia.Play();
 					}
 					lastAnimation = currentAnimation.animation;
+					lastResults2 = commandRecognized;
+					switch(commandRecognized){
+					case "HEYMONSTER":
+						heyMonster();
+						break;
+					case "SINGQUESTION":
+						askMonster();
+						break;
+					case "SUNSHINES":
+						break;
+					case "FLOWER":
+						break;
+					case "RAIN":
+						break;
+					case "THUNDER":
+						break;
+					case "STARS":
+						break;
+					default:
+						lastResults2 = "NO VIABLE CASE";
+						break;
 					}
+				}
 				catch(System.Exception e){
 					lastResults2="Exception"+e.ToString();
 					return;
 				}
-				//Check for collisions
+			}
+			if(animationQueue.Count!=0){
+				//Not playing anything
+				if(!((CustomAnimation)animationQueue.Peek()).isPlaying()){
+					//Check if empty
+					animationQueue.Dequeue();
+					((CustomAnimation)animationQueue.Peek()).startAnimation();				}
+				
 			}
 		}
-        //Horizontal
-        if (GameObject.FindGameObjectWithTag("Monster").transform.position.x < leftBorder-buffer)
-        { // ship is past world-space view / off screen
-            lastResults2 = "Too far left";
-            GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(rightBorder + buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.y, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-        }
-        if ( GameObject.FindGameObjectWithTag("Monster").transform.position.x > rightBorder + buffer)
-        {
-            lastResults2 = "Too far right";
-            GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(leftBorder - buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.y, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-        }
-
-        //Vertical
-        if (GameObject.FindGameObjectWithTag("Monster").transform.position.y < bottomBorder + buffer)
-        { 
-			//ship is past world-space view / off screen
-            lastResults2 = "Too far DOWN";
-            GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x,topBorder - buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-        }
-
-
-		if (GameObject.FindGameObjectWithTag("Monster").transform.position.y > topBorder - buffer)
-		{ 
-			//ship is past world-space view / off screen
-			lastResults2 = "Too far DOWN";
-			GameObject.FindGameObjectWithTag("Monster").transform.position = new Vector3(GameObject.FindGameObjectWithTag("Monster").transform.position.x,bottomBorder + buffer, GameObject.FindGameObjectWithTag("Monster").transform.position.z);  // move ship to opposite side
-		}
-
+        
        
         movement = new Vector2(speed.x*direction.x, speed.y * direction.y);
 		Vector3 theScale1 = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
 		theScale1.y = 1.6f;
 		GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale1;
 
+	}
+
+	private void heyMonster(){
+		//Show monster onscreen
+		lastResults2 = "Monster is appearing";
+
+		if(!isVisible()){
+			lastResults2 = "Monster is appearing";
+			appearMonster();
+		}
+		//Enable bounds in case monster runs out of bounds
+		GetComponent<BorderCollision>().enabled = true;
+		//We need to set this as a queue to play after the monste appears so it flows smoothly
+		GetComponent<AudioSource>().Stop();
+
+		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/breath01");
+		GetComponent<AudioSource>().clip = breath;
+		GetComponent<AudioSource>().loop = true;
+		GetComponent<AudioSource>().PlayDelayed(10);
+		lastResults2 = "Delegate!!!";
+
+	}
+	delegate void MyDelegate();
+	MediaPlayerCtrl.VideoEnd myDelegate;
+	void PrintNum()
+	{
+		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/breath03");
+		GetComponent<AudioSource>().clip = breath;
+		GetComponent<AudioSource>().loop = true;
+		GetComponent<AudioSource>().PlayDelayed(4);
+	}
+
+	private void askMonster(){
+
+		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/no sound 01");
+		GetComponent<AudioSource>().clip = breath;
+		GetComponent<AudioSource>().PlayDelayed(10);
+
+		//Wait until finish!
+//		myDelegate = PrintNum;
+//		MediaPlayerCtrl.VideoEnd = PrintNum;
+//		scrMedia.OnEnd = 
+
+	}
+
+	private void sunShine(){
+
+	}
+	private void flower(){
+
+	}
+	private void rain(){
+
+	}
+	private void thunder(){
+
+	}
+	private void stars(){
+
+	}
+	private void appearMonster(){
+		lastResults2 = "In appear monster";
+		GameObject.FindGameObjectWithTag(taggedObject).transform.position = new Vector3(GetComponent<BorderCollision>().leftBorder, GameObject.FindGameObjectWithTag(taggedObject).transform.position.y, GameObject.FindGameObjectWithTag(taggedObject).transform.position.z);  // move ship to opposite side
+		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/curious hmm sound 01");
+		GetComponent<AudioSource>().clip = breath;
+		GetComponent<AudioSource>().Play();
+
+	}
+	private void monsterNo(int type){
+
+	}
+	private bool isVisible(){
+		return GetComponent<Renderer>().isVisible; 
 	}
 	void OnGUI()
 	{
@@ -169,7 +239,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     public void OnError(int error, string errorMessage)
     {
         lastResults = errorMessage + " " + error;
-        if (error == 5)
+        if (error == 5 || error == 4 || error == 6)
         {
             SpeechRecognition.StartListening();
         }
@@ -189,7 +259,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     {
         //throw new System.NotImplementedException();
 
-        SpeechRecognition.StartListening();
+        //SpeechRecognition.StartListening();
     }
 
     public void OnRmsChanged(float rmsdB)
@@ -209,4 +279,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
         */
         //throw new System.NotImplementedException();
     }
+
+
 }

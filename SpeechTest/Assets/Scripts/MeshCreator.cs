@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -32,12 +32,13 @@ public class MeshCreator : MonoBehaviour {
 		//UVs
 		Vector2[] uvs = new Vector2[vertices.Count];
 		int multiplier = 0;
+		float x = 0f;
 		for(int i = 0 ; i<vertices.Count;i++)
 		{
-			float x = (multiplier * 1.0f )/ (vertices.Count/2.0f);
-//			Debug.Log ((multiplier * 1.0f ));
-//			Debug.Log((vertices.Count/2.0f));
-//			Debug.Log(x);
+			x = (multiplier * 1.0f )/ (vertices.Count/2.0f);
+			Debug.Log ((multiplier * 1.0f ));
+			Debug.Log((vertices.Count/2.0f));
+			Debug.Log(x);
 			//Even number
 			if(i%2==0)
 			{
@@ -50,27 +51,10 @@ public class MeshCreator : MonoBehaviour {
 				multiplier+=1;
 			}
 		}
-
-
-//		string[] uvsstringlist = new string[uvs.Length];
-//		for (int i =0; i<uvs.Length; i++)
-//			uvsstringlist [i] = uvs[i].ToString ();
-//
-//
-//		System.IO.File.WriteAllLines(@"/Users/pedrocolon/Desktop/uvs.txt", uvsstringlist);
-//
-//		string[] triangleStringList = new string[triangles.Length];
-//		for (int i =0; i<triangles.Length; i++)
-//			triangleStringList [i] = triangles[i].ToString ();
-//		
-//		
-//		System.IO.File.WriteAllLines(@"/Users/pedrocolon/Desktop/triangles.txt", triangleStringList);
-//
-//		System.IO.StreamWriter file = new System.IO.StreamWriter("/Users/pedrocolon/Desktop/vertices.txt");
-//		foreach(Vector3 v in vertices)
-//			file.WriteLine(v.ToString());
-//		
-//		file.Close();
+		Debug.Log("Printing vector");
+		foreach(Vector2 uv in uvs){
+			Debug.Log (uv);
+		}
 
 		mesh.vertices = verticesArray;
 		mesh.triangles = triangles;
@@ -133,24 +117,27 @@ public class MeshCreator : MonoBehaviour {
 		List<Vector3> verticesExternal = new List<Vector3> ();
 		//Internal circle
 
-		Vector3 p0= new Vector3(-1,0,0),p1=new Vector3(-1,1,0),p2=new Vector3(1,1,0),p3=new Vector3(1,0,0);
+		Vector3 p0= new Vector3(-1,0,0),p1=new Vector3(-1,1,0),p2=new Vector3(1,1,0),p3=new Vector3(1,0,0),
+				p00 = new Vector3(1,0,0), p11 = new Vector3(1,-1,0),p22 = new Vector3(-1,-1,0), p33 = new Vector3(-1,0,0);
 		for (int i =-1; i<points; i++) {
 			Debug.Log ("Current i"+i);
 			verticesInternal.Add(CalculateBezierPoint((i*1f)/points,p0,p1,p2,p3));
 		}
 		//Add lower level circle
-		for (int i =verticesInternal.Count-1; i>-1; i--) {
-			verticesInternal.Add(new Vector3(verticesInternal[i].x,verticesInternal[i].y*-1f,verticesInternal[i].z));
+		for (int i =-1; i<points; i++) {
+			verticesInternal.Add(CalculateBezierPoint((i*1f)/points,p00,p11,p22,p33));
 		}
 		
 		//External circle
-		p0=new Vector3(-5,0,0);p1=new Vector3(-5,5,0);p2=new Vector3(5,5,0);p3 = new Vector3(5,0,0);
+		p0=new Vector3(-9,0,0);p1=new Vector3(-12,11,0);p2=new Vector3(11,14,0);p3 = new Vector3(7,0,0);
+		p00 = new Vector3(7,0,0); p11 = new Vector3(7,-6,0);p22 = new Vector3(-8,-11,0); p33 = new Vector3(-9,0,0);
+
 		for (int i =-1; i<points; i++) {
 			verticesExternal.Add(CalculateBezierPoint((i+1f)/points,p0,p1,p2,p3));
 		}
 		//Add lower level circle
-		for (int i =verticesExternal.Count-1; i>-1; i--) {
-			verticesExternal.Add((new Vector3(verticesExternal[i].x,verticesExternal[i].y*-1f,verticesExternal[i].z)));
+		for (int i =-1; i<points; i++) {
+			verticesExternal.Add(CalculateBezierPoint((i+1f)/points,p00,p11,p22,p33));
 		}
 		//Mix the vertices for easier access
 		

@@ -51,9 +51,16 @@
      <Compile Include="Assets\PluginAssets\EasyMovieTexture\Scripts\MediaPlayerCtrl.cs" />
      <Compile Include="Assets\PluginAssets\EasyMovieTexture\Scripts\MediaPlayerFullScreenCtrl.cs" />
      <Compile Include="Assets\PluginAssets\EasyMovieTexture\Scripts\SphereMirror.cs" />
+     <Compile Include="Assets\Scripts\Animation.cs" />
+     <Compile Include="Assets\Scripts\BorderCollision.cs" />
+     <Compile Include="Assets\Scripts\LoadLevel.cs" />
      <Compile Include="Assets\Scripts\MeshCreator.cs" />
      <Compile Include="Assets\Scripts\MoveOnSpeech.cs" />
+     <Compile Include="Assets\Scripts\SceneSwitch.cs" />
+     <Compile Include="Assets\Scripts\resolution.cs" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Unlit_SphereInside.shader" />
+     <None Include="Assets\Resources\titlescreencommands.txt" />
+     <None Include="Assets\Resources\scriptcommands1.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\readme.txt" />
      <None Include="Assets\PluginAssets\SpeechRecognition\readme.txt" />

@@ -8,20 +8,20 @@ public class SpeechAnimationDictionary : MonoBehaviour {
 
 	public Dictionary<string,List<string>> voiceCommands = new Dictionary<string, List<string>>();
 	public Dictionary<string,Animation> commandAnimations = new Dictionary<string, Animation>();
-	public class Animation{
-		public bool flippedX = false, flippedY = false, running = false, walking = false;
-		public string animation = null;
-		public Vector2 direction = new Vector2(0,0);
-		public Animation (bool flippedX, bool flippedY, string animation)
-		{
-			this.flippedX = flippedX;
-			this.flippedY = flippedY;
-			this.animation = animation;
-		}
-		public override string ToString(){
-			return ""+flippedX+" "+flippedY+" "+animation+" "+running+" "+walking+" "+direction;
-		}
-	}
+//	public class Animation{
+//		public bool flippedX = false, flippedY = false, running = false, walking = false;
+//		public string animation = null;
+//		public Vector2 direction = new Vector2(0,0);
+//		public Animation (bool flippedX, bool flippedY, string animation)
+//		{
+//			this.flippedX = flippedX;
+//			this.flippedY = flippedY;
+//			this.animation = animation;
+//		}
+//		public override string ToString(){
+//			return ""+flippedX+" "+flippedY+" "+animation+" "+running+" "+walking+" "+direction;
+//		}
+//	}
 
 
 	//is filled on calling ReloadDictionary, is used for faster detection

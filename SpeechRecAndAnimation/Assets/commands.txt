@@ -1,0 +1,64 @@
+[
+{
+	"name":"UP",
+	"voiceCommands":["up", "go up"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"null",
+		"direction":[0,1],
+		"running":false,
+		"walking":true
+	}
+	
+},
+{
+	"name":"DOWN",
+	"voiceCommands":["down", "go down"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"null",
+		"direction":[0,-1],
+		"running":false,
+		"walking":true
+	}
+	
+},
+{
+	"name":"RIGHT",
+	"voiceCommands":["right", "go right"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"MonsterRuns03.mp4",
+		"direction":[1,0],
+		"running":true,
+		"walking":false
+	}
+},
+{
+	"name":"LEFT",
+	"voiceCommands":["left", "go left"],
+	"animation":{
+		"flipX":true,
+		"flipY":false,
+		"animation":"MonsterRuns03.mp4",
+		"direction":[-1,0],
+		"running":true,
+		"walking":false
+	}
+},
+{
+	"name":"STOP",
+	"voiceCommands":["stop", "go down"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"Monster Looks Up.mp4",
+		"direction":[0,0],
+		"running":false,
+		"walking":false
+	}
+}
+]
