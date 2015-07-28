@@ -12,6 +12,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 	private string lastAnimation = "";
 	public string taggedObject = "Monster";
 	private Queue animationQueue = new Queue();
+	private CustomAnimation currentAnimation = null;
 	// Use this for initialization
     void Start()
     {
@@ -36,6 +37,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     // Update is called once per frame
     void Update()
     {
+		//Get the command that was recognized
 		string commandRecognized = "";
 		foreach(string key in SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations.Keys){
 			if(SpeechRecognition.CommandRecognized(key)){
@@ -44,57 +46,12 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 				break;
 			}
 		}
+		//Act on it, set the animation queue correctly and initiate it once.
 		if(!(commandRecognized.Equals("")||commandRecognized==null)){
 			
-			Debug.Log("Animation Dictionary");
-			Debug.Log("AnimationDict"+SpeechRecognition.GetSpeechAnimationDictionary());
-			SpeechAnimationDictionary.Animation currentAnimation = null;
-
-			currentAnimation = SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations[commandRecognized];
-			if(currentAnimation != null){
-				try{
-					direction = currentAnimation.direction;
-					if(facingRight && currentAnimation.flippedX){
-						//Monster is facing right and we need to flip
-						facingRight = !facingRight;
-						Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
-						theScale.x *= -1;
-						//lastResults2 = theScale.ToString();
-						GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
-					}
-					else if(!facingRight&&!currentAnimation.flippedX){
-						//opposite condition
-						facingRight = !facingRight;
-						Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
-						theScale.x *= -1;
-						//lastResults2 = theScale.ToString();
-						GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
-					}
-					//Check if running or walking
-					if(currentAnimation.running){
-						running = currentAnimation.running;
-						walking = false;
-						speed = runningSpeed;
-					}
-					else if(currentAnimation.walking){
-						running = false;
-						walking = currentAnimation.walking;
-						speed = walkingSpeed;
-					}
-					else{
-						running = walking = false;
-					}
-					if(currentAnimation!=null)
-					if(lastAnimation.Equals(currentAnimation.animation)){
-						//Do nothing video is already playing
-					}
-					else if(!currentAnimation.animation.Equals("")&&currentAnimation.animation!=null){
-						scrMedia.Load(currentAnimation.animation);
-						scrMedia.Play();
-					}
-					lastAnimation = currentAnimation.animation;
-					lastResults2 = commandRecognized;
-					switch(commandRecognized){
+			//Load the animation queue and the current animation for the recognized command
+			try{
+				switch(commandRecognized){
 					case "HEYMONSTER":
 						heyMonster();
 						break;
@@ -102,6 +59,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 						askMonster();
 						break;
 					case "SUNSHINES":
+						sunShine();
 						break;
 					case "FLOWER":
 						break;
@@ -114,24 +72,74 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					default:
 						lastResults2 = "NO VIABLE CASE";
 						break;
+				}
+
+				//Set the currently playing animation after the command has been identified
+				currentAnimation = (CustomAnimation)animationQueue.Peek();
+
+				currentAnimation.customBehavior();
+
+				direction = currentAnimation.direction;
+				if(facingRight && currentAnimation.flippedX){
+					//Monster is facing right and we need to flip
+					facingRight = !facingRight;
+					Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
+					theScale.x *= -1;
+					//lastResults2 = theScale.ToString();
+					GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
+				}
+				else if(!facingRight&&!currentAnimation.flippedX){
+					//opposite condition
+					facingRight = !facingRight;
+					Vector3 theScale = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
+					theScale.x *= -1;
+					//lastResults2 = theScale.ToString();
+					GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
+				}
+				//Check if running or walking
+				if(currentAnimation.running){
+					running = currentAnimation.running;
+					walking = false;
+					speed = runningSpeed;
+				}
+				else if(currentAnimation.walking){
+					running = false;
+					walking = currentAnimation.walking;
+					speed = walkingSpeed;
+				}
+				else{
+					running = walking = false;
+				}
+				if(currentAnimation!=null)
+					if(lastAnimation.Equals(currentAnimation.animation)){
+						//Do nothing video is already playing
 					}
+				else if(!currentAnimation.animation.Equals("")&&currentAnimation.animation!=null){
+					currentAnimation.startAnimation();
 				}
-				catch(System.Exception e){
-					lastResults2="Exception"+e.ToString();
-					return;
-				}
+				lastAnimation = currentAnimation.animation;
+				lastResults2 = commandRecognized;
+
 			}
-			if(animationQueue.Count!=0){
-				//Not playing anything
-				if(!((CustomAnimation)animationQueue.Peek()).isPlaying()){
+			catch(System.Exception e){
+				lastResults2="Exception"+e.ToString();
+				return;
+			}
+
+		}
+		if(animationQueue.Count!=0){
+			//Check if looping
+			if(!((CustomAnimation)animationQueue.Peek()).loopState)
+				//if not then check if done
+				lastResults2 = ((CustomAnimation)animationQueue.Peek()).isPlayingOnce()+"";
+				if(!((CustomAnimation)animationQueue.Peek()).isPlayingOnce()){
 					//Check if empty
 					animationQueue.Dequeue();
-					((CustomAnimation)animationQueue.Peek()).startAnimation();				}
-				
-			}
+					((CustomAnimation)animationQueue.Peek()).startAnimation();				
+				}
 		}
-        
-       
+
+		//Apply the direction and etc
         movement = new Vector2(speed.x*direction.x, speed.y * direction.y);
 		Vector3 theScale1 = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
 		theScale1.y = 1.6f;
@@ -141,52 +149,105 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 
 	private void heyMonster(){
 		//Show monster onscreen
-		lastResults2 = "Monster is appearing";
 
 		if(!isVisible()){
-			lastResults2 = "Monster is appearing";
 			appearMonster();
 		}
-		//Enable bounds in case monster runs out of bounds
-		GetComponent<BorderCollision>().enabled = true;
-		//We need to set this as a queue to play after the monste appears so it flows smoothly
-		GetComponent<AudioSource>().Stop();
 
-		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/breath01");
-		GetComponent<AudioSource>().clip = breath;
-		GetComponent<AudioSource>().loop = true;
-		GetComponent<AudioSource>().PlayDelayed(10);
-		lastResults2 = "Delegate!!!";
 
-	}
-	delegate void MyDelegate();
-	MediaPlayerCtrl.VideoEnd myDelegate;
-	void PrintNum()
-	{
-		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/breath03");
-		GetComponent<AudioSource>().clip = breath;
-		GetComponent<AudioSource>().loop = true;
-		GetComponent<AudioSource>().PlayDelayed(4);
+		//Configure the animation
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"HEYMONSTER");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterIdleBreaths Hard.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(0f,0f);
+		heyMonsterAnimation.victim = this.gameObject;
+		heyMonsterAnimation.loop(true);
+
+		//animationQueue.Enqueue(heyMonsterAnimation);
+		
 	}
 
 	private void askMonster(){
+		((CustomAnimation)animationQueue.Peek()).stopAnimation();
+		animationQueue.Clear();
+		CustomAnimation askMonsterAnimation = new CustomAnimation(false,false,"NO1");
+		askMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		askMonsterAnimation.animation = "Monster NO 1.mp4";
+		askMonsterAnimation.audio = "Sounds/MonsterSounds/no sound 01";
+		askMonsterAnimation.direction = new Vector2(0f,0f);
+		askMonsterAnimation.victim = this.gameObject;
+		askMonsterAnimation.loop(false);
+		animationQueue.Enqueue(askMonsterAnimation);
 
-		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/no sound 01");
-		GetComponent<AudioSource>().clip = breath;
-		GetComponent<AudioSource>().PlayDelayed(10);
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"IDLE1");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterIdleBreaths Hard.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(0f,0f);
+		heyMonsterAnimation.victim = this.gameObject;
+		heyMonsterAnimation.loop(false);//TODO CHANGE TO TRUE
 
-		//Wait until finish!
-//		myDelegate = PrintNum;
-//		MediaPlayerCtrl.VideoEnd = PrintNum;
-//		scrMedia.OnEnd = 
-
+		animationQueue.Enqueue(askMonsterAnimation);
 	}
-
+	
+	public IEnumerator SunRiseandShine() {
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
+		int seconds = GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().GetDuration();
+		yield return new WaitForSeconds(seconds*1f); // waits 3 seconds
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Load("sun shines.mp4");
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
+		
+	}
 	private void sunShine(){
+		if(!isVisible()){
+			appearMonster();
+		}
+		//Change the background
+		Vector3 temp = GameObject.Find("daybackground").transform.position;
+		GameObject.Find("daybackground").transform.position = new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+9f);
+		temp = GameObject.Find("nightbackground").transform.position;
+		GameObject.Find("nightbackground").transform.position= new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+10f);
+		//Bring forth the sun
+		temp = GameObject.Find("SunShine").transform.position;
+		GameObject.Find("SunShine").transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+		//Start the sun shine animation
+		StartCoroutine(SunRiseandShine());
+		//Monster Look Up animation
+		CustomAnimation MonsterLookUp = new CustomAnimation(false,false,"LOOKUP");
+		MonsterLookUp.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterLookUp.animation = "Monster Looks Up.mp4";
+		MonsterLookUp.audio = "Sounds/MonsterSounds/muttering";
+		MonsterLookUp.direction = new Vector2(0f,0f);
+		MonsterLookUp.victim = this.gameObject;
+		MonsterLookUp.loop(false);
+		animationQueue.Enqueue(MonsterLookUp);
 
+		//Enqueue the monster NO animation
+		CustomAnimation MonsterNo2 = new CustomAnimation(false,false,"NO2");
+		MonsterNo2.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterNo2.animation = "Monster NO 2.mp4";
+		MonsterNo2.audio = "Sounds/MonsterSounds/no sound 02";
+		MonsterNo2.direction = new Vector2(0f,0f);
+		MonsterNo2.victim = this.gameObject;
+		MonsterNo2.loop(false);
+		animationQueue.Enqueue(MonsterNo2);
+
+		//Monster Default Animation
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"IDLE1");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterIdleBreaths Hard.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(0f,0f);
+		heyMonsterAnimation.victim = this.gameObject;
+		heyMonsterAnimation.loop(true);
+
+		
+		
+//
 	}
 	private void flower(){
-
+	
 	}
 	private void rain(){
 
@@ -199,15 +260,22 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 	}
 	private void appearMonster(){
 		lastResults2 = "In appear monster";
-		GameObject.FindGameObjectWithTag(taggedObject).transform.position = new Vector3(GetComponent<BorderCollision>().leftBorder, GameObject.FindGameObjectWithTag(taggedObject).transform.position.y, GameObject.FindGameObjectWithTag(taggedObject).transform.position.z);  // move ship to opposite side
-		AudioClip breath =  (AudioClip)Resources.Load("Sounds/MonsterSounds/curious hmm sound 01");
-		GetComponent<AudioSource>().clip = breath;
-		GetComponent<AudioSource>().Play();
+		GameObject.FindGameObjectWithTag(taggedObject).transform.position = new Vector3(GetComponent<BorderCollision>().leftBorder+3f, GameObject.FindGameObjectWithTag(taggedObject).transform.position.y, GameObject.FindGameObjectWithTag(taggedObject).transform.position.z);  // move ship to opposite side
+		//Enable bounds in case monster runs out of bounds
+		GetComponent<BorderCollision>().enabled = true;
 
+		//Configure the animation
+		CustomAnimation appearAnimation = new CustomAnimation(false,false,"APPEAR");
+		appearAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		appearAnimation.animation = "MonsterIdleBurps.mp4";
+		appearAnimation.audio = "Sounds/MonsterSounds/curious hmm sound 01";
+		appearAnimation.direction = new Vector2(0f,0f);
+		appearAnimation.victim = this.gameObject;
+		appearAnimation.loop(false);
+		//Enqueue it!
+		animationQueue.Enqueue(appearAnimation);
 	}
-	private void monsterNo(int type){
 
-	}
 	private bool isVisible(){
 		return GetComponent<Renderer>().isVisible; 
 	}
@@ -239,10 +307,11 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     public void OnError(int error, string errorMessage)
     {
         lastResults = errorMessage + " " + error;
-        if (error == 5 || error == 4 || error == 6)
+        if (error == 5 || error == 4)
         {
             SpeechRecognition.StartListening();
         }
+
     }
 
     public void OnEvent(int eventType, System.Collections.Generic.Dictionary<string, string> bundle)

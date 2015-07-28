@@ -3,9 +3,10 @@ using System.Collections;
 
 public class CustomAnimation{
 	public GameObject victim;
-	public bool flippedX = false, flippedY = false, running = false, walking = false;
+	public bool flippedX = false, flippedY = false, running = false, walking = false, loopState = false;
 	public string animation = null, audio = null;
 	public Vector2 direction = new Vector2(0,0);
+
 	public CustomAnimation (bool flippedX, bool flippedY, string animation)
 	{
 		this.flippedX = flippedX;
@@ -17,8 +18,8 @@ public class CustomAnimation{
 	}
 	public MediaPlayerCtrl screenItem;
 
-	public bool isPlaying(){
-		return screenItem.GetCurrentSeekPercent()==100;
+	public bool isPlayingOnce(){
+		return screenItem.GetCurrentSeekPercent()!=100;
 	}
 	public void stopAnimation(){
 		victim.GetComponent<AudioSource>().Stop();
@@ -34,5 +35,19 @@ public class CustomAnimation{
 		victim.GetComponent<AudioSource>().Play();
 		screenItem.Play();
 	}
+	public void loop(bool condition){
+		loopState = condition;
+		if(loopState){
+			screenItem.m_bLoop = true;
+			victim.GetComponent<AudioSource>().loop = true;
+		}
+		else{
+			screenItem.m_bLoop = false;
+			victim.GetComponent<AudioSource>().loop = false;
 
+		}
+	}
+	public virtual void customBehavior(){
+		return;
+	}
 }

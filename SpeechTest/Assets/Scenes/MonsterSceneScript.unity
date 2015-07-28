@@ -87,6 +87,82 @@ NavMeshSettings:
     cellSize: .166666672
     manualCellSize: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &89310134
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1056014887}
+    m_Modifications:
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: -7.73000002
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: -1.24000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 184894, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_Name
+      value: SunShine
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 8.37129402
+      objectReference: {fileID: 0}
+    - target: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_LocalScale.x
+      value: 2.15720797
+      objectReference: {fileID: 0}
+    - target: {fileID: 184894, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_TagString
+      value: Sunshine
+      objectReference: {fileID: 0}
+    - target: {fileID: 11478996, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_strFileName
+      value: sun rises.mp4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11478996, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_bLoop
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11478996, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+      propertyPath: m_bAutoPlay
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 5018314, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+    - {fileID: 11493260, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+  m_ParentPrefab: {fileID: 100100000, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+  m_IsPrefabParent: 0
+--- !u!4 &89310135 stripped
+Transform:
+  m_PrefabParentObject: {fileID: 430600, guid: a69f52d76f97b4eaa89f6a0058c2b4af, type: 2}
+  m_PrefabInternal: {fileID: 89310134}
 --- !u!1001 &96877448
 Prefab:
   m_ObjectHideFlags: 0
@@ -237,7 +313,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 758764114}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 50, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 2000386870}
@@ -442,6 +518,7 @@ Transform:
   m_Children:
   - {fileID: 218724946}
   - {fileID: 1818236677}
+  - {fileID: 89310135}
   m_Father: {fileID: 0}
   m_RootOrder: 1
 --- !u!1 &1062943076
@@ -603,7 +680,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: f18ce3ebc5e1841afaabc0115cbc8746, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: .660000026
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -615,7 +692,7 @@ AudioSource:
   rolloffMode: 0
   BypassEffects: 0
   BypassListenerEffects: 0
-  BypassReverbZones: 0
+  BypassReverbZones: 1
   rolloffCustomCurve:
     serializedVersion: 2
     m_Curve:
@@ -833,13 +910,13 @@ Camera:
     serializedVersion: 2
     x: 0
     y: 0
-    width: 1
-    height: 1
+    width: 2
+    height: 3
   near clip plane: .300000012
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 4.89177704
+  orthographic size: 10.0930405
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

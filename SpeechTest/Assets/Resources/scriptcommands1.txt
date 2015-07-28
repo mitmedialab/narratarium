@@ -28,7 +28,7 @@
 },
 {
 	"name":"SUNSHINES",
-	"voiceCommands":["would you sing if the sun shines", "sun shine", "what if the sun shines", "would you if the sun shines", "will you if the sun shines"],
+	"voiceCommands":["would you sing if the sun shines", "sun shine", "what if the sun shines", "would you if the sun shines", "will you if the sun shines", "sunshine"],
 	"animation":{
 		"flipX":false,
 		"flipY":false,
