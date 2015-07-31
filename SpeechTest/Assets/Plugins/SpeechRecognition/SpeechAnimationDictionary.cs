@@ -44,7 +44,18 @@ public class SpeechAnimationDictionary : MonoBehaviour {
 	}
 
 	public void TestResults(ref string[] speechResults, ref HashSet<string> foundCommands){
-		foreach(string result in speechResults){
+		List<string> speechRes = new List<string>();
+		foreach(string s in speechResults){
+			//Add the entire phrase
+			speechRes.Add(s);
+			//Break it up and add
+			string[] splitup = s.Split(null);
+
+			foreach(string ss in splitup){
+				speechRes.Add (ss);
+			}
+		}
+		foreach(string result in speechRes){
 			string trimmed = result.Trim();
 			if(revertedCommands.ContainsKey(trimmed)){
 				foundCommands.UnionWith(revertedCommands[trimmed]);
