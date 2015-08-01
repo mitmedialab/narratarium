@@ -545,10 +545,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
         {
             SpeechRecognition.StartListening();
         }
-		if(error == 8){
-			SpeechRecognition.StopListening();
-			SpeechRecognition.StartListening();
-		}
+
 	}
 
     public void OnEvent(int eventType, System.Collections.Generic.Dictionary<string, string> bundle)
