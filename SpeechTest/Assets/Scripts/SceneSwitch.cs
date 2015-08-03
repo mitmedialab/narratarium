@@ -6,13 +6,12 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
     private GUIStyle fontStyle = new GUIStyle();
     private string lastResults = "";
     // Use this for initialization
-    void Start()
+
+	void Start()
     {
-        SpeechRecognition.AddSpeechRecognitionListeren(this);
-        SpeechRecognition.StartListening();
+		SpeechRecognition.AddSpeechRecognitionListeren(this);
+		SpeechRecognition.StartListening();
         fontStyle.normal.textColor = Color.white;
-
-
     }
     public void OnResults(string[] results)
     {
@@ -25,8 +24,9 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
     // Update is called once per frame
     void Update()
     {
+
 		string commandRecognized = "";
-		Debug.Log("Beggining update");
+		try{
 		foreach(string key in SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations.Keys){
 			if(SpeechRecognition.CommandRecognized(key)){
 				commandRecognized = key;
@@ -38,19 +38,24 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 			if(commandRecognized.Equals("HEYMONSTER")){
 				SpeechRecognition.StopListening();
 				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-				SpeechRecognition.Destroy(SpeechRecognition.instance);
-
+				DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
+				DontDestroyOnLoad(SpeechRecognition.instance);
 				Application.LoadLevel(1);
 			}
 			else if(commandRecognized.Equals("360VIDEO")){
 				SpeechRecognition.StopListening();
 				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-				SpeechRecognition.Destroy(SpeechRecognition.instance);
-				
+				DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
+				DontDestroyOnLoad(SpeechRecognition.instance);
 				Application.LoadLevel(2);
 			}
+			else if(commandRecognized.Equals("EXIT")){
+				Application.Quit();
+			}
 		}
-        
+		}catch(System.Exception e){
+			lastResults=e.ToString();
+		}
 	}
 	void OnGUI()
 	{
@@ -74,7 +79,7 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 
     public void OnError(int error, string errorMessage)
     {
-        lastResults = errorMessage + " " + error;
+//        lastResults = errorMessage + " " + error;
         if (error == 5)
         {
             SpeechRecognition.StartListening();
@@ -104,13 +109,9 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 
     public void OnChangeState(SpeechRecognition.State newState)
     {
-        //throw new System.NotImplementedException();
-        /*
-        if (newState == SpeechRecognition.State.IDLE)
-        {
-            SpeechRecognition.StartListening();
-        }
-        */
-        //throw new System.NotImplementedException();
+		//throw new System.NotImplementedException();
+//		lastResults = newState.ToString();
+		//throw new System.NotImplementedException();
+
     }
 }

@@ -149,7 +149,65 @@ public class SpeechRecognition : MonoBehaviour {
 		}
 #endif
 	}
-
+	public void initialize(){
+		
+		if(instance != null){
+			Destroy(this.gameObject);
+			return;
+		}
+		DontDestroyOnLoad(this.gameObject);
+		instance = this;
+		speechDictionary = gameObject.GetComponent<SpeechAnimationDictionary>();
+		
+		string fileContent = loadFile(fileName);
+		
+		
+		Debug.Log ("Filecontent:"+fileContent);
+		speechDictionary.loadDictionary(fileContent);
+		speechDictionary.ReloadDictionary();
+		errorMessages.Add(3, "Audio recording error.");
+		errorMessages.Add(5, "Other client side errors.");
+		errorMessages.Add(9, "Insufficient permissions");
+		errorMessages.Add(2, "Other network related errors.");
+		errorMessages.Add(1, "Network operation timed out.");
+		errorMessages.Add(7, "No recognition result matched.");
+		errorMessages.Add(8, "RecognitionService busy.");
+		errorMessages.Add(4, "Server sends error status.");
+		errorMessages.Add(6, "No speech input.");
+		#if UNITY_ANDROID && !UNITY_EDITOR
+		AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer"); 
+		currentActivity = jc.GetStatic<AndroidJavaObject>("currentActivity");
+		speechRecognition = new AndroidJavaClass("be.jannesplyson.unity3dspeechrecognition.Unity3DSpeechRecognition");
+		isRecognitionAvailable = speechRecognition.CallStatic<bool>("isRecognitionAvailable",currentActivity);
+		if(isRecognitionAvailable){
+			speechRecognition.SetStatic<int>("maxResults",maxResults);
+			speechRecognition.SetStatic<string>("preferredLanguage",preferredLanguage);
+			speechRecognition.SetStatic<bool>("enableOnBeginningOfSpeech", enableOnBeginningOfSpeech);
+			speechRecognition.SetStatic<bool>("enableOnBufferReceived", enableOnBufferReceived);
+			speechRecognition.SetStatic<bool>("enableOnEndOfSpeech", enableOnEndOfSpeech);
+			speechRecognition.SetStatic<bool>("enableOnEvent", enableOnEvent);
+			speechRecognition.SetStatic<bool>("enableOnPartialResults", enableOnPartialResults);
+			speechRecognition.SetStatic<bool>("enableOnReadyForSpeech", enableOnReadyForSpeech);
+			speechRecognition.SetStatic<bool>("enableOnRmsChanged", enableOnRmsChanged);
+			speechRecognition.SetStatic<bool>("autoRestart", autoRestart);
+			speechRecognition.SetStatic<bool>("autoRestartOnResume", autoRestartOnResume);
+			speechRecognition.SetStatic<float>("autoRestartAmpThreshold", autoRestartAmpThreshold);
+			maxResultsJni = speechRecognition.GetStatic<int>("maxResults");
+			preferredLanguageJni = speechRecognition.GetStatic<string>("preferredLanguage");
+			enableOnBeginningOfSpeechJni = speechRecognition.GetStatic<bool>("enableOnBeginningOfSpeech");
+			enableOnBufferReceivedJni = speechRecognition.GetStatic<bool>("enableOnBufferReceived");
+			enableOnEndOfSpeechJni = speechRecognition.GetStatic<bool>("enableOnEndOfSpeech");
+			enableOnEventJni = speechRecognition.GetStatic<bool>("enableOnEvent");
+			enableOnPartialResultsJni = speechRecognition.GetStatic<bool>("enableOnPartialResults");
+			enableOnReadyForSpeechJni = speechRecognition.GetStatic<bool>("enableOnReadyForSpeech");
+			enableOnRmsChangedJni = speechRecognition.GetStatic<bool>("enableOnRmsChanged");
+			autoRestartJni = speechRecognition.GetStatic<bool>("autoRestart");
+			autoRestartOnResumeJni = speechRecognition.GetStatic<bool>("autoRestartOnResume");
+			autoRestartAmpThresholdJni = speechRecognition.GetStatic<float>("autoRestartAmpThreshold");
+			speechRecognition.CallStatic("initSpeechRecognition",currentActivity);
+		}
+		#endif
+	}
 	// Update is called once per frame
 	void Update () {
 		if(state != State.NOT_INITIALIZED){

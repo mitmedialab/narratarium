@@ -93,7 +93,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					break;
 				case "SINGQUESTION":
 					lastResults2=commandRecognized;
-
 					askMonster();
 					break;
 				case "SUNSHINES":
@@ -101,13 +100,16 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					sunShine();
 					break;
 				case "FLOWER":
-					throw new UnityException("NOT IMPLEMENTED");
+					lastResults2=commandRecognized;
+					flower();
 					break;
 				case "RAIN":
-					throw new UnityException("NOT IMPLEMENTED");
+					lastResults2=commandRecognized;
+					rain();
 					break;
 				case "THUNDER":
-					throw new UnityException("NOT IMPLEMENTED");
+					lastResults2=commandRecognized;
+					thunder();
 					break;
 				case "STARS":
 					lastResults2=commandRecognized;
@@ -123,12 +125,10 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					break;
 				case "UP":
 					lastResults2=commandRecognized;
-
 					monsterUp();
 					break;
 				case "DOWN":
 					lastResults2=commandRecognized;
-
 					monsterDown();
 					break;
 				case "STOP":
@@ -136,10 +136,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					monsterStop();
 					break;
 				case "EXIT":
-					SpeechRecognition.StopListening();
-					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-					SpeechRecognition.Destroy(SpeechRecognition.instance);
-					Application.LoadLevel(0);
+					Application.Quit();
 					break;
 				default:
 					lastResults2 = "NO VIABLE CASE";
@@ -208,9 +205,9 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
 		heyMonsterAnimation.animation = "MonsterRuns03.mp4";
 		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
-		heyMonsterAnimation.direction = new Vector2(-1f,0f);
+		heyMonsterAnimation.direction = new Vector2(1f,0f);
 		heyMonsterAnimation.running = true;
-		heyMonsterAnimation.flippedX = true;
+		heyMonsterAnimation.flippedX = false;
 		heyMonsterAnimation.victim = this.gameObject;
 		heyMonsterAnimation.animationTime = 3f;
 
@@ -229,8 +226,9 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
 		heyMonsterAnimation.animation = "MonsterRuns03.mp4";
 		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
-		heyMonsterAnimation.direction = new Vector2(1f,0f);
+		heyMonsterAnimation.direction = new Vector2(-1f,0f);
 		heyMonsterAnimation.running = true;
+		heyMonsterAnimation.flippedX = true;
 		heyMonsterAnimation.animationTime = 3f;
 		heyMonsterAnimation.victim = this.gameObject;
 		animationQueue.Enqueue(heyMonsterAnimation);
@@ -336,8 +334,15 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		yield return new WaitForSeconds(2f); // waits 3 seconds
 		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Load("sun shines.mp4");
 		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bLoop =true;
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bAutoPlay = true;
 		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
 		
+	}
+	public IEnumerator FlowerBloom() {
+		for(int i = 1;i<=5;i++){
+			GameObject.Find("FlowerBloom"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
 	}
 	public IEnumerator TwinkleStars() {
 		for(int i = 1;i<=3;i++){
@@ -356,8 +361,11 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 			yield return new WaitForSeconds(current.animationTime); 
 			animationQueue.Dequeue();
 		}
+		if(animationQueue.Count>1)
+		animationQueue.Dequeue();
 		CustomAnimation last =(CustomAnimation)  animationQueue.Peek();
 		last.screenItem.m_bLoop = true;
+		last.screenItem.m_bAutoPlay = true;
 		last.loadAnimation();
 		setAnimationProperties();
 		last.startAnimation();
@@ -372,18 +380,13 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 			appearMonster();
 		}
 		//Change the background
-		Vector3 temp = GameObject.Find("daybackground").transform.position;
-		GameObject.Find("daybackground").transform.position = new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+9f);
-		temp = GameObject.Find("nightbackground").transform.position;
-		GameObject.Find("nightbackground").transform.position= new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+10f);
+		switchToDay();
 		//Bring forth the sun
-		temp = GameObject.Find("SunShine").transform.position;
-		GameObject.Find("SunShine").transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
-
-		for(int i = 1;i<=3;i++){
-			temp = GameObject.Find("TwinkleStars"+i).transform.position;
-			GameObject.Find("TwinkleStars"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
-		}
+		showSun();
+		hideStars();
+		hideThunder();
+		hideFlowers();
+		hideRain();
 		//Start the sun shine animation
 		StartCoroutine(SunRiseandShine());
 		//Monster Look Up animation
@@ -419,18 +422,268 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 
 		animationQueue.Enqueue(heyMonsterAnimation);
 		StartCoroutine(PlayAnimations());
+	}
 
-
-
-//
+	private void switchToDay(){
+		Vector3 temp = GameObject.Find("daybackground").transform.position;
+		GameObject.Find("daybackground").transform.position = new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+9f);
+		temp = GameObject.Find("nightbackground").transform.position;
+		GameObject.Find("nightbackground").transform.position= new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+10f);
+	}
+	private void switchToNight(){
+		Vector3 temp = GameObject.Find("daybackground").transform.position;
+		GameObject.Find("daybackground").transform.position = new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+10f);
+		temp = GameObject.Find("nightbackground").transform.position;
+		GameObject.Find("nightbackground").transform.position= new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+9f);
+	}
+	private void showSun(){
+		Vector3 temp = GameObject.Find("SunShine").transform.position;
+		GameObject.Find("SunShine").transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+	}
+	private void hideSun(){
+		Vector3 temp = GameObject.Find("SunShine").transform.position;
+		GameObject.Find("SunShine").transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Stop();
+	}
+	private void showStars(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=3;i++){
+			temp = GameObject.Find("TwinkleStars"+i).transform.position;
+			GameObject.Find("TwinkleStars"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+		}
+	}
+	private void hideStars(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=3;i++){
+			temp = GameObject.Find("TwinkleStars"+i).transform.position;
+			GameObject.Find("TwinkleStars"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
+			GameObject.Find("TwinkleStars"+i).GetComponent<MediaPlayerCtrl>().Stop();
+		}
+	}
+	private void showFlowers(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=5;i++){
+			temp = GameObject.Find("FlowerBloom"+i).transform.position;
+			GameObject.Find("FlowerBloom"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+		}
+	}
+	private void hideFlowers(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=5;i++){
+			temp = GameObject.Find("FlowerBloom"+i).transform.position;
+			GameObject.Find("FlowerBloom"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
+			GameObject.Find("FlowerBloom"+i).GetComponent<MediaPlayerCtrl>().Stop();
+		}
+	}
+	private void showRain(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=2;i++){
+			temp = GameObject.Find("RainCloud"+i).transform.position;
+			GameObject.Find("RainCloud"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+		}
+	}
+	private void hideRain(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=2;i++){
+			temp = GameObject.Find("RainCloud"+i).transform.position;
+			GameObject.Find("RainCloud"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
+			GameObject.Find("RainCloud"+i).GetComponent<MediaPlayerCtrl>().Stop();
+		}
+	}
+	private void showThunder(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=3;i++){
+			temp = GameObject.Find("Thunder"+i).transform.position;
+			GameObject.Find("Thunder"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
+		}
+	}
+	private void hideThunder(){
+		Vector3 temp = new Vector3();
+		for(int i = 1;i<=3;i++){
+			temp = GameObject.Find("Thunder"+i).transform.position;
+			GameObject.Find("Thunder"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
+			GameObject.Find("Thunder"+i).GetComponent<MediaPlayerCtrl>().Stop();
+		}
 	}
 	private void flower(){
-	
+		if(currentAnimation!=null)currentAnimation.stopAnimation();
+		
+		animationQueue.Clear();
+		if(!isVisible()){
+			appearMonster();
+		}
+		//Change the background
+		switchToDay();
+		//Bring forth the sun
+		showSun();
+		hideStars();
+		showFlowers();
+		hideRain();
+		hideThunder();
+		//Start the sun shine animation
+		StartCoroutine(SunRiseandShine());
+		//Start the flower animation
+		StartCoroutine(FlowerBloom());
+
+		//Monster Look Up animation
+		CustomAnimation MonsterLookUp = new CustomAnimation(false,false,"LOOKDOWN");
+		MonsterLookUp.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterLookUp.animation = "MonsterIdleBlinks.mp4";
+		MonsterLookUp.audio = "Sounds/MonsterSounds/monsterLaughs";
+		MonsterLookUp.direction = new Vector2(0f,0f);
+		MonsterLookUp.victim = this.gameObject;
+		MonsterLookUp.animationTime = 3f;
+		
+		animationQueue.Enqueue(MonsterLookUp);
+		
+		//Enqueue the monster NO animation
+		CustomAnimation MonsterNo2 = new CustomAnimation(false,false,"NO1");
+		MonsterNo2.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterNo2.animation = "Monster NO 1.mp4";
+		MonsterNo2.audio = "Sounds/MonsterSounds/no sound 01";
+		MonsterNo2.direction = new Vector2(0f,0f);
+		MonsterNo2.victim = this.gameObject;
+		MonsterNo2.animationTime = 5f;
+		
+		animationQueue.Enqueue(MonsterNo2);
+		
+		//Monster Default Animation
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"RIGHT");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterRuns03.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(-1f,0f);
+		heyMonsterAnimation.running = true;
+		heyMonsterAnimation.animationTime = 3f;
+		heyMonsterAnimation.victim = this.gameObject;
+		animationQueue.Enqueue(heyMonsterAnimation);
+
+		StartCoroutine(PlayAnimations());
+	}
+	public IEnumerator StartRain() {
+		for(int i = 1;i<=2;i++){
+			GameObject.Find("RainCloud1"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
 	}
 	private void rain(){
+		if(currentAnimation!=null)currentAnimation.stopAnimation();
+		
+		animationQueue.Clear();
+		if(!isVisible()){
+			appearMonster();
+		}
+		//Change the background
+		switchToDay();
+		//Bring forth the sun
+		switchToNight();
+		hideStars();
+		hideSun();
+		hideFlowers();	
+		hideThunder();
+		showRain();
+		//Start the flower animation
+		StartCoroutine(StartRain());
+		
+		//Monster Look Up animation
+		CustomAnimation MonsterLookUp = new CustomAnimation(false,false,"LOOKDOWN");
+		MonsterLookUp.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterLookUp.animation = "MonsterIdleBlinks.mp4";
+		MonsterLookUp.audio = "Sounds/MonsterSounds/monsterLaughs";
+		MonsterLookUp.direction = new Vector2(0f,0f);
+		MonsterLookUp.victim = this.gameObject;
+		MonsterLookUp.animationTime = 3f;
+		
+		animationQueue.Enqueue(MonsterLookUp);
+		
+		//Enqueue the monster NO animation
+		CustomAnimation MonsterNo2 = new CustomAnimation(false,false,"NO1");
+		MonsterNo2.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterNo2.animation = "Monster NO 1.mp4";
+		MonsterNo2.audio = "Sounds/MonsterSounds/no sound 01";
+		MonsterNo2.direction = new Vector2(0f,0f);
+		MonsterNo2.victim = this.gameObject;
+		MonsterNo2.animationTime = 5f;
+		
+		animationQueue.Enqueue(MonsterNo2);
+		
+		//Monster Default Animation
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"LEFT");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterRuns03.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(-1f,0f);
+		heyMonsterAnimation.running = true;
+		heyMonsterAnimation.animationTime = 3f;
+		heyMonsterAnimation.victim = this.gameObject;
 
+		animationQueue.Enqueue(heyMonsterAnimation);
+		
+		StartCoroutine(PlayAnimations());
 	}
+
+	public IEnumerator StartThunder() {
+		for(int i = 1;i<=3;i++){
+			GameObject.Find("Thunder"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
+	}
+
 	private void thunder(){
+		if(currentAnimation!=null)
+			currentAnimation.stopAnimation();
+		
+		animationQueue.Clear();
+		
+		if(!isVisible()){
+			appearMonster();
+		}
+		//Change the background
+		switchToNight();
+		//Bring forth the stars
+		hideStars();
+		//Shove the sun back
+		hideSun();
+		hideFlowers();
+		hideRain();
+		showThunder();
+		
+		//Start the sun shine animation
+		StartCoroutine(StartThunder());
+		//Monster Look Up animation
+		
+		CustomAnimation MonsterLookUp = new CustomAnimation(false,false,"LOOKUP");
+		MonsterLookUp.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterLookUp.animation = "Monster Looks Up.mp4";
+		MonsterLookUp.audio = "Sounds/MonsterSounds/positive hmm sound";
+		MonsterLookUp.direction = new Vector2(0f,0f);
+		MonsterLookUp.victim = this.gameObject;
+		MonsterLookUp.animationTime = 4f;
+		animationQueue.Enqueue(MonsterLookUp);
+		
+		
+		//Enqueue the monster NO animation
+		CustomAnimation MonsterNo2 = new CustomAnimation(false,false,"YES");
+		MonsterNo2.screenItem = GetComponent<MediaPlayerCtrl>();
+		MonsterNo2.animation = "Monster Looks Up.mp4";
+		MonsterNo2.audio = "Sounds/MonsterSounds/yes sound 01";
+		MonsterNo2.direction = new Vector2(0f,0f);
+		MonsterNo2.victim = this.gameObject;
+		MonsterNo2.animationTime = 3f;
+		
+		animationQueue.Enqueue(MonsterNo2);
+		
+		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"IDLE1");
+		heyMonsterAnimation.screenItem = GetComponent<MediaPlayerCtrl>();
+		heyMonsterAnimation.animation = "MonsterIdleBreaths Hard.mp4";
+		heyMonsterAnimation.audio = "Sounds/MonsterSounds/breath01";
+		heyMonsterAnimation.direction = new Vector2(0f,0f);
+		heyMonsterAnimation.animationTime = 3f;
+		heyMonsterAnimation.victim = this.gameObject;
+		
+		animationQueue.Enqueue(heyMonsterAnimation);
+		
+		StartCoroutine(PlayAnimations());
 
 	}
 
@@ -447,19 +700,14 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 			appearMonster();
 		}
 		//Change the background
-		Vector3 temp = GameObject.Find("daybackground").transform.position;
-		GameObject.Find("daybackground").transform.position = new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+10f);
-		temp = GameObject.Find("nightbackground").transform.position;
-		GameObject.Find("nightbackground").transform.position= new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+9f);
+		switchToNight();
 		//Bring forth the stars
-		for(int i = 1;i<=3;i++){
-			temp = GameObject.Find("TwinkleStars"+i).transform.position;
-			GameObject.Find("TwinkleStars"+i).transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+8f);
-		}
+		showStars();
 		//Shove the sun back
-		temp = GameObject.Find("SunShine").transform.position;
-		GameObject.Find("SunShine").transform.position=new Vector3(temp.x,temp.y,GameObject.Find("1-Middle").transform.position.z+20f);
-
+		hideSun();
+		hideFlowers();
+		hideRain();
+		hideThunder();
 		//Start the sun shine animation
 		StartCoroutine(TwinkleStars());
 		//Monster Look Up animation
@@ -550,46 +798,38 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     public void OnError(int error, string errorMessage)
     {
         lastResults = errorMessage + " " + error;
-        if (error == 5 || error == 4)
+        if (error == 5||error == 4)
         {
             SpeechRecognition.StartListening();
         }
 
-	}
 
+	}
     public void OnEvent(int eventType, System.Collections.Generic.Dictionary<string, string> bundle)
     {
         //throw new System.NotImplementedException();
     }
-
     public void OnPartialResults(System.Collections.Generic.Dictionary<string, string> partialResults)
     {
         //throw new System.NotImplementedException();
     }
-
     public void OnReadyForSpeech(System.Collections.Generic.Dictionary<string, string> bundle)
     {
         //throw new System.NotImplementedException();
 
         //SpeechRecognition.StartListening();
     }
-
     public void OnRmsChanged(float rmsdB)
-    {
-    
+    {    
         //throw new System.NotImplementedException();
     }
-
     public void OnChangeState(SpeechRecognition.State newState)
     {
         //throw new System.NotImplementedException();
-        /*
-        if (newState == SpeechRecognition.State.IDLE)
+		if (newState == SpeechRecognition.State.NOT_INITIALIZED)
         {
             SpeechRecognition.StartListening();
-        }
-        */
-        //throw new System.NotImplementedException();
+		}        //throw new System.NotImplementedException();
     }
 
 

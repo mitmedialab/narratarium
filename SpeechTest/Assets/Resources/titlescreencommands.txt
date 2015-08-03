@@ -1,25 +1,239 @@
 ﻿[
-{
-	"name":"HEYMONSTER",
-	"voiceCommands":["hey monster", "heymonster", "hey monster!"],
-	"animation":{
-		"flipX":false,
-		"flipY":false,
-		"animation":"MonsterIdleBreaths Hard.mp4",
-		"direction":[0,0],
-		"running":false,
-		"walking":true
+
+	{
+		"name":"360VIDEO",
+		"voiceCommands":["360", "video", "360 video"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true
+		}
 	},
-	"name":"360VIDEO",
-	"voiceCommands":["360", "video", "360 video"],
-	"animation":{
-		"flipX":false,
-		"flipY":false,
-		"animation":"MonsterIdleBreaths Hard.mp4",
-		"direction":[0,0],
-		"running":false,
-		"walking":true
+	{
+		"name":"PAUSE",
+		"voiceCommands":["pause"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"null",
+			"direction":[0,1],
+			"running":false,
+			"walking":true
+		}
+		
+	},
+	{
+		"name":"START",
+		"voiceCommands":["start", "play"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"null",
+			"direction":[0,-1],
+			"running":false,
+			"walking":true
+		}
+		
+	},
+	{
+		"name":"EXIT",
+		"voiceCommands":["exit"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterRuns03.mp4",
+			"direction":[1,0],
+			"running":true,
+			"walking":false
+		}
+	},
+	{
+		"name":"HEYMONSTER",
+		"voiceCommands":["hey monster", "heymonster", "hey monster!", "monster"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":["breath01","breath02","breath03"]
+		}
+		
+	},
+	{
+		"name":"SINGQUESTION",
+		"voiceCommands":["do you want to sing", "want to sing", "sing"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"Monster NO 1.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+	},
+	{
+		"name":"SUNSHINES",
+		"voiceCommands":["would you sing if the sun shines", "sun shine", "what if the sun shines", "would you if the sun shines", "will you if the sun shines", "sunshine"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+		
+	},
+	{
+		"name":"FLOWER",
+		"voiceCommands":["would you sing if flowers bloom", "flowers bloom", "what if the flowers bloom", "flower", "flowers"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+		
+	},
+	{
+		"name":"RAIN",
+		"voiceCommands":["will you if it starts to rain", "rain", "would you if it rains"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+		
+	},
+	{
+		"name":"THUNDER",
+		"voiceCommands":["will you in a thunderstorm", "thunderstorm","thunder", "would you in a thunderstorm"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+		
+	},
+	{
+		"name":"STARS",
+		"voiceCommands":["will you under twinkle stars", "twinkle stars", "stars","twinkle","would you under twinkle stars"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterIdleBreaths Hard.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}
+		
+	},
+	{
+		"name":"NO1",
+		"voiceCommands":[],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"Monster NO 1.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":["no sound 1.mp3","no sound 2.mp3","no sound 3.mp3"]
+		}	
+	},
+	{
+		"name":"NO2",
+		"voiceCommands":[],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"Monster NO 2.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":true,
+			"sound":null
+		}	
+	},
+	{
+		"name":"UP",
+		"voiceCommands":["up", "go up"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"null",
+			"direction":[0,1],
+			"running":false,
+			"walking":true
+		}
+		
+	},
+	{
+		"name":"DOWN",
+		"voiceCommands":["down", "go down"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"null",
+			"direction":[0,-1],
+			"running":false,
+			"walking":true
+		}
+		
+	},
+	{
+		"name":"RIGHT",
+		"voiceCommands":["right", "go right"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"MonsterRuns03.mp4",
+			"direction":[1,0],
+			"running":true,
+			"walking":false
+		}
+	},
+	{
+		"name":"LEFT",
+		"voiceCommands":["left", "go left"],
+		"animation":{
+			"flipX":true,
+			"flipY":false,
+			"animation":"MonsterRuns03.mp4",
+			"direction":[-1,0],
+			"running":true,
+			"walking":false
+		}
+	},
+	{
+		"name":"STOP",
+		"voiceCommands":["stop", "go down"],
+		"animation":{
+			"flipX":false,
+			"flipY":false,
+			"animation":"Monster Looks Up.mp4",
+			"direction":[0,0],
+			"running":false,
+			"walking":false
+		}
 	}
-	
-}
+
 ]

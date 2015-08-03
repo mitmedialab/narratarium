@@ -183,5 +183,17 @@
 		"running":false,
 		"walking":false
 	}
+},
+{
+	"name":"EXIT",
+	"voiceCommands":["exit"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"MonsterRuns03.mp4",
+		"direction":[1,0],
+		"running":true,
+		"walking":false
+	}
 }
 ]
