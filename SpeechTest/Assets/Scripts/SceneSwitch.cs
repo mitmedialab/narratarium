@@ -38,7 +38,16 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 			if(commandRecognized.Equals("HEYMONSTER")){
 				SpeechRecognition.StopListening();
 				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+				SpeechRecognition.Destroy(SpeechRecognition.instance);
+
 				Application.LoadLevel(1);
+			}
+			else if(commandRecognized.Equals("360VIDEO")){
+				SpeechRecognition.StopListening();
+				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+				SpeechRecognition.Destroy(SpeechRecognition.instance);
+				
+				Application.LoadLevel(2);
 			}
 		}
         

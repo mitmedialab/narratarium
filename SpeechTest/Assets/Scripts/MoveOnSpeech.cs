@@ -9,7 +9,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     private string lastResults = "", lastResults2="";
 	public Vector2 direction = new Vector2(0, 0), speed = new Vector2(2, 2), movement, runningSpeed = new Vector2(2, 2), walkingSpeed = new Vector2(1, 1);
     private bool facingRight = true, running = false, walking = false;
-	private string lastAnimation = "";
 	public string taggedObject = "Monster";
 	private Queue animationQueue = new Queue();
 	private CustomAnimation currentAnimation = null;
@@ -136,6 +135,12 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					lastResults2=commandRecognized;
 					monsterStop();
 					break;
+				case "EXIT":
+					SpeechRecognition.StopListening();
+					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+					SpeechRecognition.Destroy(SpeechRecognition.instance);
+					Application.LoadLevel(0);
+					break;
 				default:
 					lastResults2 = "NO VIABLE CASE";
 					break;
@@ -159,7 +164,9 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 			}
 		}
 
-		
+		if(currentAnimation!=null)
+			setAnimationProperties();
+
 		//Apply the direction and etc
 		movement = new Vector2(speed.x*direction.x, speed.y * direction.y);
 		Vector3 theScale1 = GameObject.FindGameObjectWithTag("Monster").transform.localScale;
@@ -342,10 +349,12 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		for(int i = 1;i<=animationQueue.Count-1;i++){
 			CustomAnimation current = (CustomAnimation) animationQueue.Peek();
 			current.loadAnimation();
+			currentAnimation = current;
 			setAnimationProperties();
 			current.startAnimation();
 			currentAnimation = current;
 			yield return new WaitForSeconds(current.animationTime); 
+			animationQueue.Dequeue();
 		}
 		CustomAnimation last =(CustomAnimation)  animationQueue.Peek();
 		last.screenItem.m_bLoop = true;

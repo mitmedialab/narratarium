@@ -9,6 +9,16 @@
 		"direction":[0,0],
 		"running":false,
 		"walking":true
+	},
+	"name":"360VIDEO",
+	"voiceCommands":["360", "video", "360 video"],
+	"animation":{
+		"flipX":false,
+		"flipY":false,
+		"animation":"MonsterIdleBreaths Hard.mp4",
+		"direction":[0,0],
+		"running":false,
+		"walking":true
 	}
 	
 }

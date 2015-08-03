@@ -51,6 +51,7 @@
      <None Include="Assets\Resources\titlescreencommands.txt" />
      <None Include="Assets\Resources\scriptcommands1.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
+     <None Include="Assets\Resources\360VideoCommands.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\readme.txt" />
      <None Include="Assets\PluginAssets\SpeechRecognition\readme.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
