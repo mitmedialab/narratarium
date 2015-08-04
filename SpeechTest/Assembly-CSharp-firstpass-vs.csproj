@@ -52,10 +52,10 @@
      <Compile Include="Assets\Plugins\SpeechRecognition\SpeechAnimationDictionary.cs" />
      <Compile Include="Assets\Plugins\SpeechRecognition\SpeechRecognition.cs" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Unlit_SphereInside.shader" />
-     <None Include="Assets\Resources\titlescreencommands.old.txt" />
+     <None Include="Assets\Resources\Commands.txt" />
      <None Include="Assets\Resources\scriptcommands1.old.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
-     <None Include="Assets\Resources\Commands.txt" />
+     <None Include="Assets\Resources\Commands.old1.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\readme.txt" />
      <None Include="Assets\PluginAssets\SpeechRecognition\readme.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />

@@ -337,7 +337,7 @@ MonoBehaviour:
   autoRestartAmpThreshold: .5
   disableScreenLockOnResult: 0
   screenLockTimeout: 10
-  fileName: titlescreencommands
+  fileName: Commands
 --- !u!4 &374055182
 Transform:
   m_ObjectHideFlags: 0
