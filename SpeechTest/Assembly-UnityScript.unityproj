@@ -48,15 +48,15 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\CameraFlip2.js" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Unlit_SphereInside.shader" />
-     <None Include="Assets\Resources\titlescreencommands.txt" />
-     <None Include="Assets\Resources\scriptcommands1.txt" />
+     <None Include="Assets\Resources\titlescreencommands.old.txt" />
+     <None Include="Assets\Resources\scriptcommands1.old.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
-     <None Include="Assets\Resources\360VideoCommands.txt" />
+     <None Include="Assets\Resources\Commands.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\readme.txt" />
      <None Include="Assets\PluginAssets\SpeechRecognition\readme.txt" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Universal Chroma Key.shader" />
-     <None Include="Assets\Resources\commands.txt" />
+     <None Include="Assets\Resources\commands.old.txt" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Readme.txt" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>

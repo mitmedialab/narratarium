@@ -80,7 +80,7 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
     public void OnError(int error, string errorMessage)
     {
 //        lastResults = errorMessage + " " + error;
-        if (error == 5)
+        if (error == 5 || error ==4)
         {
             SpeechRecognition.StartListening();
         }

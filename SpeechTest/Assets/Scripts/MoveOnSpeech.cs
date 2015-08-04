@@ -273,7 +273,8 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 
 	}
 	private void heyMonster(){
-		if(currentAnimation!=null)currentAnimation.stopAnimation();
+		if(currentAnimation!=null)
+			currentAnimation.stopAnimation();
 
 		//Show monster onscreen
 		animationQueue.Clear();
@@ -281,7 +282,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		if(!isVisible()){
 			appearMonster();
 		}
-
 
 		//Configure the animation
 		CustomAnimation heyMonsterAnimation = new CustomAnimation(false,false,"HEYMONSTER");
@@ -292,6 +292,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		heyMonsterAnimation.victim = this.gameObject;
 		heyMonsterAnimation.animationTime = 2f;
 		animationQueue.Enqueue(heyMonsterAnimation);
+
 		StartCoroutine(PlayAnimations());
 
 	}
@@ -763,7 +764,6 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		appearAnimation.animationTime = 4f;
 		//Enqueue it!
 		animationQueue.Enqueue(appearAnimation);
-		StartCoroutine(PlayAnimations());
 
 	}
 

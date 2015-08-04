@@ -308,7 +308,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 11457242, guid: a88d3b38795da564dbff4e953d887215, type: 2}
       propertyPath: fileName
-      value: 360VideoCommands
+      value: Commands
       objectReference: {fileID: 0}
     - target: {fileID: 11457242, guid: a88d3b38795da564dbff4e953d887215, type: 2}
       propertyPath: autoRestartOnResume
@@ -391,6 +391,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a668b8dca2e349c682b6da4d16e964b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  flipX: 0
 --- !u!92 &1232422451
 Behaviour:
   m_ObjectHideFlags: 0
@@ -525,7 +526,7 @@ Prefab:
     - target: {fileID: 2300000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d27ceb7dd665842169d2d55be8ff9380, type: 2}
+      objectReference: {fileID: 2100000, guid: 67f26c5654b184544891bd78a12cb060, type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: f0082db35c5d5614f9e8c63a7f86aa4e, type: 2}
   m_IsPrefabParent: 0
@@ -764,7 +765,7 @@ MonoBehaviour:
   autoRestartAmpThreshold: .5
   disableScreenLockOnResult: 0
   screenLockTimeout: 10
-  fileName: 360VideoCommands
+  fileName: Commands
 --- !u!4 &2000386870
 Transform:
   m_ObjectHideFlags: 0
