@@ -1,14 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections;
-
+/**
+ * Controls the border collision of a tagged object
+ **/
 public class BorderCollision : MonoBehaviour {
+	//Variables for calculating the borders and the distance to the camera.  Buffer is for when you want the object to disappear either +buffer or -buffer
 	public float dist, leftBorder, rightBorder, buffer=0f,topBorder,bottomBorder;
 	private string lastResults2="";
 	private GUIStyle fontStyle = new GUIStyle();
 	public bool enabled = false;
 	public string taggedObject = "";
+
 	// Use this for initialization
 	void Start () {
+		//Sets up the variables
 		dist = (transform.position - (Camera.allCameras[1]).transform.position).z; 
 		
 		leftBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).x; 
@@ -16,14 +21,14 @@ public class BorderCollision : MonoBehaviour {
 		
 		topBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(1, 1, dist)).y;
 		bottomBorder = (Camera.allCameras[1]).ViewportToWorldPoint(new Vector3(0, 0, dist)).y;
-		fontStyle.normal.textColor = Color.black;
 
+		fontStyle.normal.textColor = Color.white;
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		if(enabled){
-		//Horizontal
+			//Horizontal
 			if (GameObject.FindGameObjectWithTag(taggedObject).transform.position.x < leftBorder-buffer)
 			{ // ship is past world-space view / off screen
 				lastResults2 = "Too far left";

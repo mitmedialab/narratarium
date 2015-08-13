@@ -1,10 +1,10 @@
 using UnityEngine;
 using System.Collections;
 
-
+//Main class that controls the monster
 public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
-
-    private GUIStyle fontStyle = new GUIStyle();
+    
+	private GUIStyle fontStyle = new GUIStyle();
     public MediaPlayerCtrl scrMedia;
     private string lastResults = "", lastResults2="";
 	public Vector2 direction = new Vector2(0, 0), speed = new Vector2(2, 2), movement, runningSpeed = new Vector2(2, 2), walkingSpeed = new Vector2(1, 1);
@@ -12,12 +12,65 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 	public string taggedObject = "Monster";
 	private Queue animationQueue = new Queue();
 	private CustomAnimation currentAnimation = null;
+
+	//Coroutines that performs some useful timed actions.
+	public IEnumerator SunRiseandShine() {
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
+		yield return new WaitForSeconds(2f); // waits 3 seconds
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Load("sun shines.mp4");
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bLoop =true;
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bAutoPlay = true;
+		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
+		
+	}
+	public IEnumerator FlowerBloom() {
+		for(int i = 1;i<=5;i++){
+			GameObject.Find("FlowerBloom"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
+	}
+	public IEnumerator TwinkleStars() {
+		for(int i = 1;i<=3;i++){
+			GameObject.Find("TwinkleStars"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
+	}
+	public IEnumerator PlayAnimations() {
+		for(int i = 1;i<=animationQueue.Count-1;i++){
+			CustomAnimation current = (CustomAnimation) animationQueue.Peek();
+			current.loadAnimation();
+			currentAnimation = current;
+			setAnimationProperties();
+			current.startAnimation();
+			currentAnimation = current;
+			yield return new WaitForSeconds(current.animationTime); 
+			animationQueue.Dequeue();
+		}
+		if(animationQueue.Count>1)
+			animationQueue.Dequeue();
+		CustomAnimation last =(CustomAnimation)  animationQueue.Peek();
+		last.screenItem.m_bLoop = true;
+		last.screenItem.m_bAutoPlay = true;
+		last.loadAnimation();
+		setAnimationProperties();
+		last.startAnimation();
+		currentAnimation = last;
+		
+	}
+	public IEnumerator StartThunder() {
+		for(int i = 1;i<=3;i++){
+			GameObject.Find("Thunder"+i).GetComponent<MediaPlayerCtrl>().Play();
+		}
+		yield return new WaitForSeconds(0f); 
+	}
+
+
 	// Use this for initialization
     void Start()
     {
 		//Add the listener
         SpeechRecognition.AddSpeechRecognitionListeren(this);
-		//Start it
+		//Start listening to speech
         SpeechRecognition.StartListening();
 		//Change the font to make it visible
         fontStyle.normal.textColor = Color.white;
@@ -25,6 +78,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
     }
     public void OnResults(string[] results)
     {
+		//Check what the result/speech was and restart listening
         System.Text.StringBuilder sb = new System.Text.StringBuilder();
         sb.Append(results[0]);
 		//Display the last results for debugging
@@ -32,7 +86,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		//Restart the listening.
         SpeechRecognition.StartListening();
     }
-
+	//Sets some of the monster's properties to be in accordance to the current animation
 	public void setAnimationProperties ()
 	{
 		direction = currentAnimation.direction;
@@ -53,7 +107,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 			//lastResults2 = theScale.ToString();
 			GameObject.FindGameObjectWithTag("Monster").transform.localScale = theScale;
 		}
-		//Check if running or walking
+		//Check if running or walking.
 		if(currentAnimation.running){
 			running = currentAnimation.running;
 			walking = false;
@@ -81,9 +135,8 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 				break;
 			}
 		}
-		//Act on it, set the animation queue correctly and initiate it once.
+		//Act on it, load the animations and start them.
 		if(!(commandRecognized.Equals("")||commandRecognized==null)){
-			
 			//Load the animation queue and the current animation for the recognized command
 			try{
 				switch(commandRecognized){
@@ -142,25 +195,13 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 					lastResults2 = "NO VIABLE CASE";
 					break;
 				}
-				
-				//Set the currently playing animation after the command has been identified
-				//				currentAnimation.customBehavior();
-				//				setAnimationProperties();
-				//				if(!currentAnimation.animation.Equals("")&&currentAnimation.animation!=null){
-				//					currentAnimation.loadAnimation();
-				//					currentAnimation.startAnimation();
-				//					StartCoroutine(VerifyFinishedOnce(currentAnimation.getDuration()));
-				//				}
-				//				lastAnimation = currentAnimation.animation;
-				//				lastResults2 = commandRecognized;
-				
 			}
 			catch(System.Exception e){
 				lastResults2="Exception"+e.ToString();
 				return;
 			}
 		}
-
+		//Set the properties just in ccase they were not set before.
 		if(currentAnimation!=null)
 			setAnimationProperties();
 
@@ -329,50 +370,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		StartCoroutine(PlayAnimations());
 
 	}
-	
-	public IEnumerator SunRiseandShine() {
-		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
-		yield return new WaitForSeconds(2f); // waits 3 seconds
-		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Load("sun shines.mp4");
-		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bLoop =true;
-		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().m_bAutoPlay = true;
-		GameObject.Find("SunShine").GetComponent<MediaPlayerCtrl>().Play();
-		
-	}
-	public IEnumerator FlowerBloom() {
-		for(int i = 1;i<=5;i++){
-			GameObject.Find("FlowerBloom"+i).GetComponent<MediaPlayerCtrl>().Play();
-		}
-		yield return new WaitForSeconds(0f); 
-	}
-	public IEnumerator TwinkleStars() {
-		for(int i = 1;i<=3;i++){
-			GameObject.Find("TwinkleStars"+i).GetComponent<MediaPlayerCtrl>().Play();
-		}
-		yield return new WaitForSeconds(0f); 
-	}
-	public IEnumerator PlayAnimations() {
-		for(int i = 1;i<=animationQueue.Count-1;i++){
-			CustomAnimation current = (CustomAnimation) animationQueue.Peek();
-			current.loadAnimation();
-			currentAnimation = current;
-			setAnimationProperties();
-			current.startAnimation();
-			currentAnimation = current;
-			yield return new WaitForSeconds(current.animationTime); 
-			animationQueue.Dequeue();
-		}
-		if(animationQueue.Count>1)
-		animationQueue.Dequeue();
-		CustomAnimation last =(CustomAnimation)  animationQueue.Peek();
-		last.screenItem.m_bLoop = true;
-		last.screenItem.m_bAutoPlay = true;
-		last.loadAnimation();
-		setAnimationProperties();
-		last.startAnimation();
-		currentAnimation = last;
 
-	}
 	private void sunShine(){
 		if(currentAnimation!=null)currentAnimation.stopAnimation();
 
@@ -563,7 +561,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 	}
 	public IEnumerator StartRain() {
 		for(int i = 1;i<=2;i++){
-			GameObject.Find("RainCloud1"+i).GetComponent<MediaPlayerCtrl>().Play();
+			GameObject.Find("RainCloud"+i).GetComponent<MediaPlayerCtrl>().Play();
 		}
 		yield return new WaitForSeconds(0f); 
 	}
@@ -623,12 +621,7 @@ public class MoveOnSpeech : MonoBehaviour, ISpeechRecognitionListener {
 		StartCoroutine(PlayAnimations());
 	}
 
-	public IEnumerator StartThunder() {
-		for(int i = 1;i<=3;i++){
-			GameObject.Find("Thunder"+i).GetComponent<MediaPlayerCtrl>().Play();
-		}
-		yield return new WaitForSeconds(0f); 
-	}
+
 
 	private void thunder(){
 		if(currentAnimation!=null)

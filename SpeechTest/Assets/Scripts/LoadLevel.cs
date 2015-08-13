@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+//Was to be used for transitioning
 public class LoadLevel : MonoBehaviour {
 
 	public float fadeSpeed = 1.5f;          // Speed that the screen fades to and from black.

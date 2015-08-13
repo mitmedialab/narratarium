@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+//Title screen to select which mode we will see (video or monster currently)
 public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 
     private GUIStyle fontStyle = new GUIStyle();
@@ -24,9 +25,7 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
     // Update is called once per frame
     void Update()
     {
-
 		string commandRecognized = "";
-		try{
 		foreach(string key in SpeechRecognition.GetSpeechAnimationDictionary().commandAnimations.Keys){
 			if(SpeechRecognition.CommandRecognized(key)){
 				commandRecognized = key;
@@ -36,25 +35,27 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 		}
 		if(!(commandRecognized.Equals("")||commandRecognized==null)){
 			if(commandRecognized.Equals("HEYMONSTER")){
-				SpeechRecognition.StopListening();
-				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-				DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
-				DontDestroyOnLoad(SpeechRecognition.instance);
-				Application.LoadLevel(1);
+				if(Application.loadedLevel==0){
+					SpeechRecognition.StopListening();
+					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+					DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
+					DontDestroyOnLoad(SpeechRecognition.instance);
+					Application.LoadLevel(1);
+				}
+				
 			}
 			else if(commandRecognized.Equals("360VIDEO")){
-				SpeechRecognition.StopListening();
-				SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-				DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
-				DontDestroyOnLoad(SpeechRecognition.instance);
-				Application.LoadLevel(2);
+				if(Application.loadedLevel==0){
+					SpeechRecognition.StopListening();
+					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+					DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
+					DontDestroyOnLoad(SpeechRecognition.instance);
+					Application.LoadLevel(2);
+				}
 			}
 			else if(commandRecognized.Equals("EXIT")){
 				Application.Quit();
 			}
-		}
-		}catch(System.Exception e){
-			lastResults=e.ToString();
 		}
 	}
 	void OnGUI()

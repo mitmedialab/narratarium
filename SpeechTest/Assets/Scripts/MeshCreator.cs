@@ -6,30 +6,32 @@ public class MeshCreator : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		//Creates the mesh
 		Mesh mesh = new Mesh ();
+		//Initializes the filter that displays the mesh
 		MeshFilter mf = GetComponent<MeshFilter> ();
 		mf.mesh = mesh;
 
+		//Create the vertices for the mesh
 //		List<Vector3> vertices = getVerticesCircular(0.01f);
 		List<Vector3> vertices = getVerticesBezier(1000);
+
 
 		Debug.Log ("Size of vertices" + vertices.Count);
 		Vector3[] verticesArray = vertices.ToArray ();
 
-		//Triangles
+		//Generates triangles based on those vertices.  Triangles "stitch" the mesh together
 		List<int> triangleList = getTrianglesBottomToTop (vertices.Count);
 		int[] triangles = triangleList.ToArray ();
 
 
-		//Normals
+		//Generates normals for the mesh. normals say for when should the texture in the mesh be visible
 		Vector3[] normals = new Vector3[vertices.Count];
 		for (int i =0; i<vertices.Count; i++) {
 			normals[i] = Vector3.forward * -1;
 		}
-//		Debug.Log ("Printing");
-//		Debug.Log (triangleList.ToString ());
-		//Debug.Log("Done");
-		//UVs
+
+		//Uv is the texture coordinates.   They say how the texture will be displayed/expanded
 		Vector2[] uvs = new Vector2[vertices.Count];
 		int multiplier = 0;
 		float x = 0f;
@@ -51,11 +53,11 @@ public class MeshCreator : MonoBehaviour {
 				multiplier+=1;
 			}
 		}
-		Debug.Log("Printing vector");
-		foreach(Vector2 uv in uvs){
-			Debug.Log (uv);
-		}
-
+//		Debug.Log("Printing vector");
+//		foreach(Vector2 uv in uvs){
+//			Debug.Log (uv);
+//		}
+		//Assign all the characteristics to the mesh and it will be rendered.
 		mesh.vertices = verticesArray;
 		mesh.triangles = triangles;
 		mesh.normals = normals;
@@ -171,9 +173,7 @@ public class MeshCreator : MonoBehaviour {
 		int scale = Mathf.CeilToInt (radius2 / radius);
 		subdivisions = subdivisions * scale;
 		int points2 = Mathf.FloorToInt( (2 * radius2) / subdivisions);
-		if (points2 != points)
-			throw new UnityException ("FML");
-		
+
 		for (int i =0; i<=points; i++) {
 			verticesExternal.Add(new Vector3(-radius2+i*subdivisions,getY(radius2,-radius2+i*subdivisions),0));
 		}
