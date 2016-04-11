@@ -60,7 +60,7 @@
      <Compile Include="Assets\Scripts\Video360.cs" />
      <Compile Include="Assets\Scripts\resolution.cs" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Unlit_SphereInside.shader" />
-     <None Include="Assets\Resources\Commands.txt" />
+     <None Include="Assets\Resources\commands.txt" />
      <None Include="Assets\Resources\scriptcommands1.old.txt" />
      <None Include="Assets\PluginAssets\EasyMovieTexture\Chromakey.shader" />
      <None Include="Assets\Resources\Commands.old1.txt" />
@@ -70,6 +70,7 @@
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Universal Chroma Key.shader" />
      <None Include="Assets\Resources\commands.old.txt" />
      <None Include="Assets\PluginAssets\Universal Chroma Key Shader\Readme.txt" />
+     <None Include="Assets\Resources.meta~Fixed some bugs and added a text input for simple commands.  Now you can write your simple commands in Resources_commands.txt" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

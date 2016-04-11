@@ -13,5 +13,5 @@ EditorBuildSettings:
     path: Assets/Scenes/MonsterSceneSimple.unity
   - enabled: 0
     path: Assets/Scenes/TitleScene.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/360VideoScene1.unity

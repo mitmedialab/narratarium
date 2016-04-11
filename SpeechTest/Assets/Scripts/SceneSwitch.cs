@@ -44,15 +44,15 @@ public class SceneSwitch : MonoBehaviour, ISpeechRecognitionListener {
 				}
 				
 			}
-			else if(commandRecognized.Equals("360VIDEO")){
-				if(Application.loadedLevel==0){
-					SpeechRecognition.StopListening();
-					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
-					DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
-					DontDestroyOnLoad(SpeechRecognition.instance);
-					Application.LoadLevel(2);
-				}
-			}
+//			else if(commandRecognized.Equals("360VIDEO")){
+//				if(Application.loadedLevel==0){
+//					SpeechRecognition.StopListening();
+//					SpeechRecognition.RemoveSpeechRecognitionListeren(this);
+//					DontDestroyOnLoad(SpeechRecognition.instance.gameObject);
+//					DontDestroyOnLoad(SpeechRecognition.instance);
+//					Application.LoadLevel(2);
+//				}
+//			}
 			else if(commandRecognized.Equals("EXIT")){
 				Application.Quit();
 			}
